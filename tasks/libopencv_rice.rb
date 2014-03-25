@@ -11,7 +11,9 @@ task :ext => :libopencv_rice
 file "ext/opencv_rice/libopencv_rice.so" => 
 FileList[ "ext/opencv_rice/mkrf_conf.rb",
           "ext/opencv_rice/opencv_rice/*.h",
-          "ext/opencv_rice/opencv_rice/*.cpp" ]
+          "ext/opencv_rice/opencv_rice/*.cpp",
+          "ext/opencv_rice/opencv_rice/*/*.h",
+          "ext/opencv_rice/opencv_rice/*/*.cpp" ]
 
 
 
