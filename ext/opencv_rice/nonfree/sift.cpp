@@ -1,16 +1,26 @@
 
 #include <rice/Module.hpp>
 #include <rice/Constructor.hpp>
+#include <rice/Array.hpp>
 using namespace Rice;
 
 #include <opencv2/nonfree.hpp>
 using namespace cv;
 
 
+// Define a more functional form
+Array sift_detect( SIFT &sift, InputArray img )   //, InputArray mask  )
+{
+  std::vector<KeyPoint> kps;
+  Mat mask;
+  sift( img, mask, kps );
+  return Array(kps.begin(), kps.end());
+}
+
 
 void init_sift( Module &rb_mCVRice )
 {
-  typedef void (SIFT::*sift_detect)(InputArray, InputArray, std::vector<KeyPoint>& ) const;
+  //typedef void (SIFT::*sift_detect)(InputArray, InputArray, std::vector<KeyPoint>& ) const;
   typedef void (SIFT::*sift_detect_describe)(InputArray, InputArray,
       std::vector<KeyPoint>& , OutputArray, bool ) const;
 
@@ -21,6 +31,8 @@ void init_sift( Module &rb_mCVRice )
     .define_method( "descriptor_size", &SIFT::descriptorSize )
     .define_method( "descriptor_type", &SIFT::descriptorType )
     .define_method( "default_norm", &SIFT::defaultNorm )
-    .define_method( "detect", sift_detect(&SIFT::operator()) )
+    .define_method( "detect", &sift_detect )
     .define_method( "detect_and_describe", sift_detect_describe(&SIFT::operator()) );
+
+    //.define_method( "detect", sift_detect(&SIFT::operator()) )
 }

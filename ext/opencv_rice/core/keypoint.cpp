@@ -16,6 +16,8 @@ float get_keypoint_response( const KeyPoint &kp ) { return kp.response; };
 int   get_keypoint_octave( const KeyPoint &kp ) { return kp.octave; };
 int   get_keypoint_class_id( const KeyPoint &kp ) { return kp.class_id; };
 
+typedef std::vector<KeyPoint> KeyPointVector;
+
 void init_keypoint( Module &rb_mCVRice ) {
 
   define_class_under<KeyPoint>( rb_mCVRice, "Keypoint" )
@@ -30,6 +32,10 @@ void init_keypoint( Module &rb_mCVRice ) {
     .define_method( "octave", &get_keypoint_octave )
     .define_method( "class_id", &get_keypoint_class_id );
 
+  //define_class_under<KeyPointVector>( rb_mCVRice, "KeypointArray" )
+  //  .define_constructor( Constructor<KeypointArray>() );
 
 }
+
+
 
