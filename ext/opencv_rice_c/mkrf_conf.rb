@@ -1,5 +1,6 @@
 
 require 'mkrf'
+require_relative '../../tasks/directories'
 
 sources = %w( opencv_rice.cpp )
 
@@ -16,14 +17,14 @@ Mkrf::Generator.new( 'libopencv_rice_c', sources, compiler: "g++" ) do |gen|
   # shared libraries of C++ code, so specify libraries manually for now
   #
   gen.cflags << [ "-ggdb", "-O0",
-                  "-I#{gemdir}/gems/rice-1.6.0/ruby/lib/include", 
-                  "-I#{gemdir}/gems/ffi-1.9.3/ext" ].join(' ')
+                  "-I#{dirs.rice}/include",
+                  "-I#{dirs.gemdir}/gems/ffi-1.9.3/ext" ].join(' ')
 
   # n.b.  Libraries should be specified after the object files.  
   # This 'objects' syntax causes mkrf to place this text after 
   # the list of objects on the linker command line
   # (though before the other libs)
   #
-  gen.objects << %W( -L#{gemdir}/gems/rice-1.6.0/ruby/lib/lib -lrice 
+  gen.objects << %W( -L#{dirs.rice}/lib -lrice 
                  -lopencv_core -lopencv_features2d -lopencv_highgui).join(' ')
 end
