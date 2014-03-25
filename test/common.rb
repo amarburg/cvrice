@@ -1,5 +1,8 @@
 
+require 'pathname'
 
 def test_image
-  "images/img1.jpg"
+  path = Pathname.new("test/images/img1.jpg")
+  raise "Can't find test image" unless path.readable?
+  path.to_s
 end

@@ -27,10 +27,9 @@ module Rake
       define_super
 
       desc "Run tests" + (@name == :test ? "" : " for #{@name}") + " under gdb"
-      task (@name.to_s + "_gdb").to_sym do
+      task (@name.to_s + "_gdb").to_sym do |t|
         FileUtilsExt.verbose(@verbose) do
-          args =
-            "#{ruby_opts_string} #{run_code} " +
+          args = "#{ruby_opts_string} #{run_code} " +
             "#{file_list_string} #{option_list}"
           ruby_gdb args do |ok, status|
             if !ok && status.respond_to?(:signaled?) && status.signaled?

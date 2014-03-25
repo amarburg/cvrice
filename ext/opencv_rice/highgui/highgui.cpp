@@ -1,5 +1,7 @@
 
 #include <iostream>
+#include <vector>
+using std::vector;
 
 #include <rice/Module.hpp>
 using namespace Rice;
@@ -10,14 +12,15 @@ using namespace cv;
 #include "core/to_from_ruby.h"
 
 
-// de-obfuscation wrapper that makes the filename args non-reference
 
-Mat imread_cppstring( const std::string &fname, int flags = -1 )
-{ return cv::imread( fname, flags ); }
-
+//// de-obfuscation wrapper that makes the filename args non-reference
+//
+//Mat imread_cppstring( const std::string &fname, int flags = -1 )
+//{ return cv::imread( fname, flags ); }
+//
 // Strip off the params vector for now
 // const vector<int>& params=vector<int>() )
-bool imwrite_cppstring( const std::string &fname, InputArray img )
+bool imwrite_noparams( const cv::String &fname, InputArray img )
 { return cv::imwrite( fname, img ); }
 
 
@@ -38,8 +41,8 @@ void baz_test( const Rice::String str )
 
 void init_highgui( Module &rb_mCVRice )
 {
-  rb_mCVRice.define_method( "load_image", &imread_cppstring, (Arg("filename"), Arg("flags") = 1 ) );
-  rb_mCVRice.define_method( "save_image", &imwrite_cppstring );
+  rb_mCVRice.define_method( "load_image", &imread, (Arg("filename"), Arg("flags") = 1 ) );
+  rb_mCVRice.define_method( "save_image", &imwrite_noparams, (Arg("filename"), Arg("img")) );
 
   rb_mCVRice.define_method( "bar", &bar_test );
   rb_mCVRice.define_method( "foo", &foo_test );
