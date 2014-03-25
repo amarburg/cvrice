@@ -8,7 +8,7 @@ using namespace Rice;
 using namespace cv;
 
 
-// Define a more functional form
+// Define  slightly a more functional forms
 Array sift_detect( SIFT &sift, InputArray img )   //, InputArray mask  )
 {
   std::vector<KeyPoint> kps;
@@ -17,12 +17,19 @@ Array sift_detect( SIFT &sift, InputArray img )   //, InputArray mask  )
   return Array(kps.begin(), kps.end());
 }
 
+Array sift_detect_describe( SIFT &sift, InputArray img, InputArray mask, Mat &descriptors, bool use_provided = false )
+{
+  std::vector<KeyPoint> kps;
+  sift( img, mask, kps, descriptors, use_provided );
+  return Array(kps.begin(), kps.end());
+}
+
 
 void init_sift( Module &rb_mCVRice )
 {
   //typedef void (SIFT::*sift_detect)(InputArray, InputArray, std::vector<KeyPoint>& ) const;
-  typedef void (SIFT::*sift_detect_describe)(InputArray, InputArray,
-      std::vector<KeyPoint>& , OutputArray, bool ) const;
+  //typedef void (SIFT::*sift_detect_describe)(InputArray, InputArray,
+  //    std::vector<KeyPoint>& , OutputArray, bool ) const;
 
   define_class_under<SIFT>( rb_mCVRice, "SIFT" )
     .define_constructor( Constructor<SIFT, int, int, double, double, double>(), 
@@ -32,7 +39,7 @@ void init_sift( Module &rb_mCVRice )
     .define_method( "descriptor_type", &SIFT::descriptorType )
     .define_method( "default_norm", &SIFT::defaultNorm )
     .define_method( "detect", &sift_detect )
-    .define_method( "detect_and_describe", sift_detect_describe(&SIFT::operator()) );
+    .define_method( "describe", &sift_detect_describe, (Arg("image"), Arg("mask"), Arg("descriptors"), Arg("use_provided") = false) );
 
     //.define_method( "detect", sift_detect(&SIFT::operator()) )
 }

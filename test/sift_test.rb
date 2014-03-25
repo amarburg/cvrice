@@ -22,9 +22,18 @@ class TestSIFT < Minitest::Test
     sift = SIFT.new
     kps = sift.detect( img )
 
-    puts kps.length
-    p kps.first
+    assert kps.length > 0
+    assert_kind_of Keypoint, kps.first
+  end
 
+  def test_describe
+    sift = SIFT.new
+    kps, desc = sift.describe( img )
+
+    assert kps.length > 0
+    assert_kind_of Keypoint, kps.first
+    assert_equal kps.length,            desc.rows
+    assert_equal sift.descriptor_size,  desc.cols
   end
 
 end
