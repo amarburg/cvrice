@@ -6,6 +6,8 @@ using namespace Rice;
 #include <opencv2/core.hpp>
 using namespace cv;
 
+#include "core.h"
+
 // Still haven't sussed how Rice handles accessors for class members
 // So I'm writing manual accessors for now
 float get_keypoint_x( const KeyPoint &kp ) { return kp.pt.x; };
@@ -15,8 +17,6 @@ float get_keypoint_angle( const KeyPoint &kp ) { return kp.angle; };
 float get_keypoint_response( const KeyPoint &kp ) { return kp.response; };
 int   get_keypoint_octave( const KeyPoint &kp ) { return kp.octave; };
 int   get_keypoint_class_id( const KeyPoint &kp ) { return kp.class_id; };
-
-typedef std::vector<KeyPoint> KeyPointVector;
 
 void init_keypoint( Module &rb_mCVRice ) {
 

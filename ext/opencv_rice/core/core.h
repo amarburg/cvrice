@@ -3,6 +3,8 @@
 
 #include "to_from_ruby.h"
 
+#include "keypoint.h"
+
 #ifndef __CORE_H__
 #define __CORE_H__
 
