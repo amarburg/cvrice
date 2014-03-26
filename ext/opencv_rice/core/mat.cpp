@@ -12,6 +12,8 @@ using namespace cv;
 
 #include <ffi_c/Pointer.h>
 
+#include <iostream>
+
 
 int get_mat_rows( const Mat &m ) { return m.rows; }
 int get_mat_cols( const Mat &m ) { return m.cols; }
@@ -37,6 +39,15 @@ Mat cvmat_to_mat( Object obj )
 
 }
 
+Object mat_to_cvmat( Mat &mat )
+{
+  CvMat cvmat = mat;
+
+  VALUE ptr = rbffi_Pointer_NewInstance( cvCloneMat( &cvmat ) );
+  VALUE args[] = {ptr};
+  return rb_funcall2( rb_eval_string( "CVFFI::CvMat" ), rb_intern("new"), 1, args );
+}
+
 
 void init_mat( Module &rb_mCVRice )
 {
@@ -45,7 +56,8 @@ void init_mat( Module &rb_mCVRice )
     .define_method( "rows", &get_mat_rows )
     .define_method( "cols", &get_mat_cols );
 
-  rb_mCVRice.define_method( "cvmat_to_mat", &cvmat_to_mat );
+  rb_mCVRice.define_module_function( "cvmat_to_mat", &cvmat_to_mat );
+  rb_mCVRice.define_module_function( "mat_to_cvmat", &mat_to_cvmat );
 
   define_class_under< _InputArray >( rb_mCVRice, "InputArray" );
   define_implicit_cast<Mat, _InputArray>();

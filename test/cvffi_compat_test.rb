@@ -20,6 +20,15 @@ class TestCVFFICompat < Minitest::Test
     assert_instance_of Mat, mat
   end
 
+  def test_mat_to_cvmat
+    mat = img
+
+    cvmat = mat.to_CvMat
+    p cvmat
+
+    #assert_instance_of CVFFI::CvMat, cvmat
+  end
+
   def test_save_cvmat
     cvmat = CVFFI::cvLoadImageM( test_image )
 
