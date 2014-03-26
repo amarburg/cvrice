@@ -48,16 +48,22 @@ Object mat_to_cvmat( Mat &mat )
   return rb_funcall2( rb_eval_string( "CVFFI::CvMat" ), rb_intern("new"), 1, args );
 }
 
+void takes_a_mat( Mat mat ) { ; }
+
+
 
 void init_mat( Module &rb_mCVRice )
 {
-  define_class_under< Mat >( rb_mCVRice, "Mat" )
+  Data_Type<Mat> rb_cMat = define_class_under< Mat >( rb_mCVRice, "Mat" )
     .define_constructor( Constructor<Mat>() )
     .define_method( "rows", &get_mat_rows )
     .define_method( "cols", &get_mat_cols );
 
   rb_mCVRice.define_module_function( "cvmat_to_mat", &cvmat_to_mat );
   rb_mCVRice.define_module_function( "mat_to_cvmat", &mat_to_cvmat );
+
+  // Define a few stub functions to ensure all of the to_/from_ruby templates are generated...
+  rb_mCVRice.define_module_function( "takes_a_mat", &takes_a_mat );
 
   define_class_under< _InputArray >( rb_mCVRice, "InputArray" );
   define_implicit_cast<Mat, _InputArray>();
