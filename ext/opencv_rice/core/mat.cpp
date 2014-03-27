@@ -63,6 +63,7 @@ void init_mat( Module &rb_mCVRice )
   rb_mCVRice.define_module_function( "mat_to_cvmat", &mat_to_cvmat );
 
   // Define a few stub functions to ensure all of the to_/from_ruby templates are generated...
+  // Still hurts my head figuring out why this is necessary..
   rb_mCVRice.define_module_function( "takes_a_mat", &takes_a_mat );
 
   define_class_under< _InputArray >( rb_mCVRice, "InputArray" );

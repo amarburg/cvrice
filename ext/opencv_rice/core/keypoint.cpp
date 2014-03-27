@@ -1,10 +1,14 @@
 
 #include <rice/Module.hpp>
 #include <rice/Constructor.hpp>
+#include <rice/Array.hpp>
 using namespace Rice;
 
 #include <opencv2/core.hpp>
 using namespace cv;
+
+#include <vector>
+using std::vector;
 
 #include "core.h"
 
@@ -31,11 +35,8 @@ void init_keypoint( Module &rb_mCVRice ) {
     .define_method( "response", &get_keypoint_response )
     .define_method( "octave", &get_keypoint_octave )
     .define_method( "class_id", &get_keypoint_class_id );
-
-  //define_class_under<KeyPointVector>( rb_mCVRice, "KeypointArray" )
-  //  .define_constructor( Constructor<KeypointArray>() );
-
 }
+
 
 
 

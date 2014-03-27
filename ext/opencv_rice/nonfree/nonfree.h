@@ -8,6 +8,5 @@
 void init_nonfree( Rice::Module & );
 void init_sift( Rice::Module & );
 
-
 #endif
 
