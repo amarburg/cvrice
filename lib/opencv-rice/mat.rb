@@ -15,13 +15,13 @@ module CVRice
         when 1
           case args.first
           when Matrix, Array
-            CVRice::array_to_mat args.first.to_a
+            CVRice::make_a_mat args.first.to_a
           end
         end
       end
 
       def rows( arr )
-        CVRice::array_to_mat arr 
+        CVRice::make_a_mat arr 
       end
     end
 

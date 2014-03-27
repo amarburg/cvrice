@@ -22,11 +22,16 @@ class TestMat < Minitest::Test
   end
 
   def test_conversion_from_matrix
-    matrix = Matrix.rows [ [1,2,3], [4,5,6] ]
+    arr = [ [1,2,3], [4,5,6] ]
+    matrix = Matrix.rows arr
     mat = Mat.new matrix
 
-    assert_equal 2, mat.rows
+      assert_equal 2, mat.rows
     assert_equal 3, mat.cols
+
+    takes_a_mat matrix
+    takes_a_mat Mat.new
+    takes_a_mat arr
   end
 
 end

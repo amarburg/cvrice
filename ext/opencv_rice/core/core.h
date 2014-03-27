@@ -5,6 +5,7 @@
 #include "to_from_ruby.h"
 
 #include "keypoint.h"
+#include "dmatch.h"
 
 #ifndef __CORE_H__
 #define __CORE_H__
