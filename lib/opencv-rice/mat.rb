@@ -4,7 +4,7 @@ module CVRice
 
   class Mat
 
-    # My version of an overloaded constructor
+    # Emulate the overloaded constructor in Ruby
     class << self
       alias :new_c :new
 
@@ -13,15 +13,18 @@ module CVRice
         when 0
           Mat.new_c
         when 1
-          case args.first
-          when Matrix, Array
-            CVRice::make_a_mat args.first.to_a
+          arg = args.pop
+          case arg
+          when Array, Matrix
+            CVRice::from_ruby arg
+          when CVRice::Mat
+            CVRice::Mat::copy_constructor arg
           end
         end
       end
 
       def rows( arr )
-        CVRice::make_a_mat arr 
+        Mat.new arr
       end
     end
 

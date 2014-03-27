@@ -9,29 +9,33 @@ require_relative "common"
 class TestMat < Minitest::Test
   include CVRice
 
+  def arr
+    [ [1.5,2,3.2], [-4.4,5,6] ]
+  end
+
+  def assert_mat_equals_arr( mat, which = "")
+    assert_instance_of CVRice::Mat, mat
+    assert_equal arr.length, mat.rows
+    assert_equal arr.first.length, mat.cols
+
+    arr.length.times { |r|
+      arr.first.length.times { |c|
+        #puts "%s: %d, %d, %.1f, %.1f" % [which, r,c,arr[r][c], mat.at_d(r,c)]
+        assert_in_delta arr[r][c], mat.at_d(r,c), 1e-2
+      }
+    }
+  end
+
   def test_mat
     m = Mat.new
     save_image "/tmp/foo.jpg", m
   end
 
-  def test_conversion_from_array
-    a = Mat.rows [ [1,2,3], [4,5,6] ]
-
-    assert_equal 2, a.rows
-    assert_equal 3, a.cols
-  end
-
-  def test_conversion_from_matrix
-    arr = [ [1,2,3], [4,5,6] ]
-    matrix = Matrix.rows arr
-    mat = Mat.new matrix
-
-      assert_equal 2, mat.rows
-    assert_equal 3, mat.cols
-
-    takes_a_mat matrix
-    takes_a_mat Mat.new
-    takes_a_mat arr
+  def test_constructors
+    assert_mat_equals_arr Mat.rows( arr ), "Mat.rows arr"
+    assert_mat_equals_arr Mat.new( arr ), "Mat.new arr"
+    assert_mat_equals_arr Mat.new( Matrix.rows( arr )), "Mat.new matrix"
+    assert_mat_equals_arr Mat.new( Mat.new arr ), "Mat.new Mat.new arr"
   end
 
 end

@@ -7,6 +7,7 @@ sources = %w( opencv_rice.cpp
               core/mat.cpp
               core/dmatch.cpp
               core/keypoint.cpp
+              core/cvffi_compat.cpp
               highgui/highgui.cpp
               nonfree/nonfree.cpp
               nonfree/sift.cpp )
