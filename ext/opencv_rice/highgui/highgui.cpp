@@ -41,8 +41,8 @@ void baz_test( const Rice::String str )
 
 void init_highgui( Module &rb_mCVRice )
 {
-  rb_mCVRice.define_method( "load_image", &imread, (Arg("filename"), Arg("flags") = 1 ) );
-  rb_mCVRice.define_method( "save_image", &imwrite_noparams, (Arg("filename"), Arg("img")) );
+  rb_mCVRice.define_module_function( "load_image", &imread, (Arg("filename"), Arg("flags") = 1 ) );
+  rb_mCVRice.define_module_function( "save_image", &imwrite_noparams, (Arg("filename"), Arg("img")) );
 
   rb_mCVRice.define_method( "bar", &bar_test );
   rb_mCVRice.define_method( "foo", &foo_test );
