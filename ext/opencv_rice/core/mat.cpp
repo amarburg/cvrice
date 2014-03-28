@@ -61,7 +61,7 @@ Mat from_ruby<Mat>( Object obj )
 
       const Array row( a[r] );
       for( int c = 0; c < num_cols; ++c ) {
-        m.at<double>(r,c) = NUM2DBL(row[c]);
+        m.at<double>(r,c) = rb_num2dbl(row[c]);
       } 
     }
 
@@ -80,7 +80,28 @@ Mat from_ruby<Mat>( Object obj )
 }
 
 
-double mat_at_d( Mat const &m, int r, int c ) { return m.at<double>(r,c); }
+// TODO:  These are madly non-type-safe.  
+double mat_at_d( Mat const &m, int r, int c ) {
+  switch(m.depth()) {
+    case CV_32F:
+      return (double)m.at<float>(r,c);
+    case CV_64F:
+      return m.at<double>(r,c);
+    default:
+      rb_raise( rb_eTypeError, "Haven't handled this case in mat_at_d" );
+  }
+}
+float mat_at_f( Mat const &m, int r, int c ) {
+  switch(m.depth()) {
+    case CV_32F:
+      return m.at<float>(r,c);
+    case CV_64F:
+      return (float)m.at<double>(r,c);
+    default:
+      rb_raise( rb_eTypeError, "Haven't handled this case in mat_at_f" );
+  }
+}
+
 int mat_get_rows( const Mat &m ) { return m.rows; }
 int mat_get_cols( const Mat &m ) { return m.cols; }
 
@@ -100,6 +121,7 @@ void init_mat( Module &rb_mCVRice )
     .define_method( "rows", &mat_get_rows )
     .define_method( "cols", &mat_get_cols )
     .define_method( "at_d", &mat_at_d )
+    .define_method( "at_f", &mat_at_f )
     .define_singleton_method( "copy_constructor", &copy_constructor );
 
   rb_mCVRice.define_module_function( "cvmat_to_mat", &cvmat_to_mat );

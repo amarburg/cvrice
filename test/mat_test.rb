@@ -20,7 +20,7 @@ class TestMat < Minitest::Test
 
     arr.length.times { |r|
       arr.first.length.times { |c|
-        #puts "%s: %d, %d, %.1f, %.1f" % [which, r,c,arr[r][c], mat.at_d(r,c)]
+        #puts "%s: %d, %d, %.1f, %.1f" % [which, r,c,arr[r][c], mat.at_f(r,c)]
         assert_in_delta arr[r][c], mat.at_d(r,c), 1e-2
       }
     }
