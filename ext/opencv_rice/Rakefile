@@ -6,12 +6,12 @@ require 'rake/clean'
 CLEAN.include('*.o')
 CLOBBER.include('libopencv_rice.so', 'mkrf.log')
 
-SRC = FileList['opencv_rice.cpp','core/core.cpp','core/mat.cpp','core/dmatch.cpp','core/keypoint.cpp','core/cvffi_compat.cpp','highgui/highgui.cpp','nonfree/nonfree.cpp','nonfree/sift.cpp']
+SRC = FileList['opencv_rice.cpp','core/*.cpp','highgui/highgui.cpp','nonfree/nonfree.cpp','nonfree/sift.cpp']
 OBJ = SRC.ext('o')
 CC = 'gcc'
 CPP = 'g++'
 
-ADDITIONAL_OBJECTS = '-L/home/aaron/.rvm/gems/ruby-2.1.0/gems/rice-1.6.0/ruby/lib/lib -lrice -lstdc++ -L/home/aaron/.rvm/gems/ruby-2.1.0/gems/ffi-1.9.3/lib -lffi_c -lopencv_core -lopencv_features2d -lopencv_highgui -lopencv_nonfree'
+ADDITIONAL_OBJECTS = '-L/home/aaron/.rvm/gems/ruby-2.1.0/gems/rice-1.6.0/ruby/lib/lib -lrice -lstdc++ -lopencv_core -lopencv_features2d -lopencv_highgui -lopencv_nonfree'
 
 LDSHARED = "gcc -shared "
 
@@ -21,7 +21,7 @@ INCLUDES = "-I/home/aaron/.rvm/rubies/ruby-2.1.0/include/ruby-2.1.0 -I/home/aaro
 
 LIBS = "-lpthread -ldl -lcrypt -lm"
 
-CFLAGS = "-fPIC  -O3 -fno-fast-math -ggdb3 -Wall -Wextra -Wno-unused-parameter -Wno-parentheses -Wno-long-long -Wno-missing-field-initializers -Wunused-variable -Wpointer-arith -Wwrite-strings -Wdeclaration-after-statement -Wimplicit-function-declaration  -fPIC -ggdb -O0 -fPIC -I/home/aaron/.rvm/gems/ruby-2.1.0/gems/rice-1.6.0/ruby/lib/include -I/home/aaron/.rvm/gems/ruby-2.1.0/gems/ffi-1.9.3/ext "
+CFLAGS = "-fPIC  -O3 -fno-fast-math -ggdb3 -Wall -Wextra -Wno-unused-parameter -Wno-parentheses -Wno-long-long -Wno-missing-field-initializers -Wunused-variable -Wpointer-arith -Wwrite-strings -Wdeclaration-after-statement -Wimplicit-function-declaration  -fPIC -ggdb -O0 -fPIC -I/home/aaron/.rvm/gems/ruby-2.1.0/gems/rice-1.6.0/ruby/lib/include "
 
 RUBYARCHDIR = "#{ENV["RUBYARCHDIR"]}"
 LIBRUBYARG_SHARED = "-Wl,-R -Wl,/home/aaron/.rvm/rubies/ruby-2.1.0/lib -L/home/aaron/.rvm/rubies/ruby-2.1.0/lib -lruby"

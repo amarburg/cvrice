@@ -3,11 +3,7 @@ require 'mkrf'
 require_relative '../../tasks/directories'
 
 sources = %w( opencv_rice.cpp
-              core/core.cpp
-              core/mat.cpp
-              core/dmatch.cpp
-              core/keypoint.cpp
-              core/cvffi_compat.cpp
+              core/*.cpp
               highgui/highgui.cpp
               nonfree/nonfree.cpp
               nonfree/sift.cpp )
@@ -25,8 +21,7 @@ Mkrf::Generator.new( 'libopencv_rice', sources, compiler: "g++" ) do |gen|
   # shared libraries of C++ code, so specify libraries manually for now
   #
   gen.cflags << [ '-ggdb', '-O0', '-fPIC',
-                  "-I#{dirs.rice}/include",
-                  "-I#{dirs.gemdir}/gems/ffi-1.9.3/ext" ].join(' ')
+                  "-I#{dirs.rice}/include" ].join(' ')
 
   # n.b.  Libraries should be specified after the object files.  
   # This 'objects' syntax causes mkrf to place this text after 
@@ -34,6 +29,5 @@ Mkrf::Generator.new( 'libopencv_rice', sources, compiler: "g++" ) do |gen|
   # (though before the other libs)
   #
   gen.objects << %W( -L#{dirs.rice}/lib -lrice -lstdc++
-                 -L#{dirs.ffi}/lib -lffi_c
                  -lopencv_core -lopencv_features2d -lopencv_highgui -lopencv_nonfree).join(' ')
 end

@@ -11,8 +11,6 @@ using namespace cv;
 
 #include <iostream>
 
-#include "cvffi_compat.h"
-
 
 // Ensure the matrix packages is loaded and get the ID of the
 //  Matrix class
@@ -124,8 +122,8 @@ void init_mat( Module &rb_mCVRice )
     .define_method( "at_f", &mat_at_f )
     .define_singleton_method( "copy_constructor", &copy_constructor );
 
-  rb_mCVRice.define_module_function( "cvmat_to_mat", &cvmat_to_mat );
-  rb_mCVRice.define_module_function( "mat_to_cvmat", &mat_to_cvmat );
+//  rb_mCVRice.define_module_function( "cvmat_to_mat", &cvmat_to_mat );
+//  rb_mCVRice.define_module_function( "mat_to_cvmat", &mat_to_cvmat );
 
   // Define a few stub functions to ensure all of the to_/from_ruby 
   // templates are generated...
