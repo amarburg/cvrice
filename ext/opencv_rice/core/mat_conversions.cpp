@@ -21,11 +21,6 @@ static VALUE matrix_load(  void )
   template<>
 Mat from_ruby<Mat>( Object obj )
 {
-  //  //if( obj.is_instance_of( rb_eval_string( "CVFFI::CvMat" ) ) ) {
-  //  //  return cvarrToMat( ptr_from_ffi_struct<CvMat>( obj ) );
-  //  //} else
-  //
-
   if(obj.rb_type() == T_DATA)
   {
     return *Data_Type<Mat>::from_ruby(obj);
@@ -33,10 +28,28 @@ Mat from_ruby<Mat>( Object obj )
 
   if( !RTEST(rb_cMatrix ) ) rb_cMatrix = matrix_load();
 
-  if( obj.is_instance_of( rb_cMatrix ) ) {
-    //std::cout << "Convert from Matrix" << std::endl;
-    obj =  rb_funcall( obj, rb_intern("to_a") ,0 );
-  } 
+  // Since Matrix stores the data internally as an Array, this is no
+  // more efficient than just getting the internal Array and dealing with 
+  // that
+//  if( obj.is_instance_of( rb_cMatrix ) ) {
+//    int num_rows = FIX2INT(rb_funcall( obj, rb_intern("row_size"), 0 )),
+//        num_cols = FIX2INT(rb_funcall( obj, rb_intern("column_size"), 0 ));
+//
+//    Mat m( num_rows, num_cols, CV_64F );
+//
+//
+//    for( int r = 0; r < num_rows; ++r ) {
+//      for( int c = 0; c < num_cols; ++c ) {
+//        m.at<double>(r,c) = rb_num2dbl( rb_funcall( obj, rb_intern("[]"), 2, INT2FIX(r), INT2FIX(c) ) );
+//      }
+//    }
+//
+//    return m;
+//  } else
+    
+    
+  if( obj.is_instance_of( rb_cMatrix ) ) 
+    obj = rb_funcall( obj, rb_intern("rows"), 0 );
 
   if( obj.rb_type() == T_ARRAY ) {
     const Array a( obj );
@@ -47,15 +60,18 @@ Mat from_ruby<Mat>( Object obj )
 
     int num_rows = a.size(), num_cols = Array(a[0]).size();
     Mat m( num_rows, num_cols, CV_64F );
+    double *dbl = m.ptr<double>(0);
+    int i = 0;
 
-    for( int r = 0; r < num_rows; ++r ) {
+    for( Array::const_iterator row = a.begin(); row != a.end(); ++row ) {
 
-      if( a[r].rb_type() != T_ARRAY )
-        rb_raise( rb_eTypeError, "Found element in Array which is not Array: (%s)", a[0].class_of().name().c_str() );
+      Object o( *row );
+      if( o.rb_type() != T_ARRAY )
+        rb_raise( rb_eTypeError, "Found element in Array which is not Array: (%s)", o.class_of().name().c_str() );
 
-      const Array row( a[r] );
-      for( int c = 0; c < num_cols; ++c ) {
-        m.at<double>(r,c) = rb_num2dbl(row[c]);
+      const Array thisrow( o );
+      for( Array::const_iterator col = thisrow.begin(); col != thisrow.end(); ++col, ++i ) {
+        dbl[i] = rb_num2dbl( *col );
       } 
     }
 
