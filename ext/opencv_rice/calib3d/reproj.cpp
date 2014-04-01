@@ -105,7 +105,7 @@ namespace CVRice {
 
   void init_reproj( Module &parent )
   {
-    parent.define_module_function( "cvHMaxReprojError", &cvHMaxReprojError )
+    parent.define_module_function( "computeHomographyReprojError", &cvHMaxReprojError )
       .define_module_function( "cvFMaxReprojError", &cvFMaxReprojError );
   }
 

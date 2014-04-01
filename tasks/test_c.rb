@@ -20,7 +20,7 @@ namespace :test_c do
   ldflags  = cflags
   libs  = dirs.ruby_ldflags + 
           %W( -L#{dirs.gtest}/build -lgtest
-              -lopencv_core 
+              -lopencv_core -lopencv_calib3d
               -lpthread
               -L#{dirs.topdir.join('lib')} -lopencv_rice )
 

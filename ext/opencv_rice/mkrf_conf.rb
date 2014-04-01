@@ -30,5 +30,7 @@ Mkrf::Generator.new( 'libopencv_rice', sources, compiler: "g++" ) do |gen|
   # (though before the other libs)
   #
   gen.objects << %W( -L#{dirs.rice}/lib -lrice -lstdc++
-                 -lopencv_core -lopencv_features2d -lopencv_highgui -lopencv_nonfree).join(' ')
+                 -lopencv_core -lopencv_features2d 
+                 -lopencv_calib3d
+                 -lopencv_highgui -lopencv_nonfree).join(' ')
 end
