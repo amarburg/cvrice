@@ -33,5 +33,4 @@ module CVRice
       CVRice::mat_to_cvmat( self )
     end
   end
-
 end

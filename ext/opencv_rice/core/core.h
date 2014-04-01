@@ -6,6 +6,7 @@
 
 #include "keypoint.h"
 #include "dmatch.h"
+#include "mat.h"
 
 #ifndef __CORE_H__
 #define __CORE_H__
