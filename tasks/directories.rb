@@ -18,9 +18,6 @@ class DirectorySet
     @dirs[:rice] = @dirs[:gem].join(*%w(gems rice-1.6.0 ruby lib))
     raise "Couldn't find the Rice source files \"%s\"" % @dirs[:rice] unless @dirs[:rice]
 
-        @dirs[:ffi] = @dirs[:gem].join(*%w(gems ffi-1.9.3 ))
-            raise "Couldn't find the FFI source files at \"%s\"" % @dirs[:ffi] unless @dirs[:ffi]
-
 
     set_env_paths
   end
@@ -37,10 +34,19 @@ class DirectorySet
   def topdir; dir( :top ); end
   def top; dir(:top); end
   def gtest; dir( :gtest ); end
-  def ffi; dir( :ffi ); end
   def workspace; dir( :workspace ); end
   def gemdir; dir(:gem);end
   def rice; dir(:rice); end
+
+  def ruby_cflags
+    [ "-I#{rbconfig_dir('rubyhdrdir')}",
+      "-I#{rbconfig_dir('rubyarchhdrdir')}" ]
+  end
+
+  def ruby_ldflags
+    [ rbconfig('LIBRUBYARG') ]
+  end
+
 
   def rbconfig(a) 
     RbConfig::CONFIG[a]

@@ -12,10 +12,17 @@ namespace :test_c do
   objs     = srcs.map { |f| Pathname.new(f).sub_ext('.o').to_s }
 
   cpp      = 'g++'
-  cflags   = ['-ggdb',
-              "-I#{dirs.gtest}/include"]
+  cflags   = dirs.ruby_cflags + 
+             %W( -ggdb
+                 -I#{dirs.topdir.join('ext')}
+                 -I#{dirs.rice.join('include')}
+                 -I#{dirs.gtest}/include )
   ldflags  = cflags
-  libs  = ["-L#{dirs.gtest}/build", '-lgtest', '-lpthread']
+  libs  = dirs.ruby_ldflags + 
+          %W( -L#{dirs.gtest}/build -lgtest
+              -lopencv_core 
+              -lpthread
+              -L#{dirs.topdir.join('lib')} -lopencv_rice )
 
   file test_app => [:ext] + objs do
     sh [ cpp,  *ldflags, 
