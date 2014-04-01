@@ -15,14 +15,14 @@ class TestMat < Minitest::Test
   end
 
   def test_1d_readers
-    arr = [[0,1,2,3,4,5,6,7,8]]
+    arr = [[0,1,2,3,4,5,6,7,8]].transpose
     mat = Mat.new arr
     assert_instance_of CVRice::Mat, mat
     assert_equal 9, mat.rows
     assert_equal 1, mat.cols
 
     9.times { |r|
-      assert_in_delta arr[0][r], mat[r], 1e-2
+      assert_in_delta arr[r][0], mat[r], 1e-2, "For (r=%d)" % r
     }
   end
   
