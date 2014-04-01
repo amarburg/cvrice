@@ -44,6 +44,31 @@ module CVRice
       [u,w,vt]
     end
 
+    def to_a
+      arr = rows.times.map { |i|
+        cols.times.map { |j|
+          at_d(i,j)
+        }
+      }
+
+      arr.flatten!(1) if rows == 1 or cols == 1
+
+      arr 
+    end
+
+    def to_Matrix
+      Matrix.rows to_a
+    end
+
+    def to_Vector
+      raise "Mat is not a vector" unless rows == 1 or cols == 1
+      Vector[ *(to_a.flatten(1)) ]
+    end
+
+    def [](a, b=0)
+      at_d(r,c)
+    end
+
 
     def to_CvMat
       CVRice::mat_to_cvmat( self )

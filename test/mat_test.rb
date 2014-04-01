@@ -42,9 +42,6 @@ class TestMat < Minitest::Test
     m = Mat.new [ [1,2,3],[4,5,6],[7,8,9] ]
     u,d,vt = m.svd
 
-    p u
-    p d
-    p vt
   end
 
 end
