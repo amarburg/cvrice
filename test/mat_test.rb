@@ -50,6 +50,16 @@ class TestMat < Minitest::Test
     assert_mat_equals_arr Mat.new( arr ), "Mat.new arr"
     assert_mat_equals_arr Mat.new( Matrix.rows( arr )), "Mat.new matrix"
     assert_mat_equals_arr Mat.new( Mat.new arr ), "Mat.new Mat.new arr"
+
+    mat = Mat.new( 3,3 )
+    assert_equal 3, mat.rows
+    assert_equal 3, mat.cols
+    assert_equal Mat::CV_64F, mat.type
+
+    mat = Mat.new( 4,4,Mat::CV_32F )
+    assert_equal 4, mat.rows
+    assert_equal 4, mat.cols
+    assert_equal Mat::CV_32F, mat.type
   end
 
   def assert_arr_equals_arr( a, which = "" )

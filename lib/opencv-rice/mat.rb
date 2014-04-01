@@ -5,6 +5,10 @@ module CVRice
   class Mat
     include Enumerable
 
+    # TODO:  Think of a better way to do this
+    CV_32F = 5
+    CV_64F = 6
+
     # Emulate the overloaded constructor in Ruby
     class << self
       alias :new_c :new
@@ -21,6 +25,12 @@ module CVRice
           when CVRice::Mat
             CVRice::Mat::copy_constructor arg
           end
+        when 2..3
+          if Numeric === args[0] and Numeric === args[1]
+            Mat.new_c *(args.first(3))
+          end
+        else
+          raise "Don't know how to make a Mat from: %s" % args.map {|x| x.inspect}.join(', ')
         end
       end
 
