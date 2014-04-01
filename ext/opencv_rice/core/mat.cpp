@@ -48,6 +48,10 @@ Mat make_a_mat( Mat mat ) { return mat; }
 
 Mat copy_constructor( Mat const &in ) { return Mat(in); }
 
+void mat_svd( const Mat &m, Mat &w, Mat &u, Mat &vt, int flags = 0 )
+{
+  SVD::compute( m, w, u, vt, flags );
+}
 
 void init_mat( Module &rb_mCVRice )
 {
@@ -57,6 +61,8 @@ void init_mat( Module &rb_mCVRice )
     .define_method( "cols", &mat_get_cols )
     .define_method( "at_d", &mat_at_d, (Arg("r"), Arg("c") = 0) )
     .define_method( "at_f", &mat_at_f, (Arg("r"), Arg("c") = 0) )
+    .define_method( "svd", &mat_svd, 
+        (Arg("w"), Arg("u"), Arg("vt"), Arg("flags") = 0 ) )
     .define_singleton_method( "copy_constructor", &copy_constructor );
 
   define_class_under< Matx33d >( rb_mCVRice, "Matx33d" )

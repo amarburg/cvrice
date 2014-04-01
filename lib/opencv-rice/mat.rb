@@ -28,6 +28,22 @@ module CVRice
       end
     end
 
+    alias_method :svd_c, :svd
+    def svd( opts = {} )
+      flags = 0
+      flags += 1 if opts[:modify_a]
+      flags += 2 if opts[:no_uv]
+      flags += 4 if opts[:full_uv]
+
+      w = Mat.new
+      u = Mat.new
+      vt = Mat.new
+
+      svd_c( w,u,vt, flags )
+
+      [u,w,vt]
+    end
+
 
     def to_CvMat
       CVRice::mat_to_cvmat( self )
