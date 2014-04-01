@@ -67,6 +67,13 @@ void mat_svd( const Mat &m, Mat &w, Mat &u, Mat &vt, int flags = 0 )
   SVD::compute( m, w, u, vt, flags );
 }
 
+// TODO:  Done this way because Mat::eye returns a MatExpr ... can I integrate
+// MatExpr into the library?
+Mat mat_eye( int rows, int cols, int type )
+{
+  return Mat::eye( rows, cols, type );
+}
+
 Object mat_to_a( Mat &m )
 {
   Array arr;
@@ -91,6 +98,7 @@ Object mat_to_a( Mat &m )
 
 void init_mat( Module &rb_mCVRice )
 {
+
   Data_Type<Mat> rb_cMat = define_class_under< Mat >( rb_mCVRice, "Mat" )
     .define_constructor( Constructor<Mat,int,int,int>(), (Arg("rows")=0, Arg("cols") = 0, Arg("type") = CV_64F) )
     .define_method( "rows", &mat_get_rows )
@@ -102,7 +110,8 @@ void init_mat( Module &rb_mCVRice )
     .define_method( "to_a", &mat_to_a )
     .define_method( "svd", &mat_svd, 
         (Arg("w"), Arg("u"), Arg("vt"), Arg("flags") = 0 ) )
-    .define_singleton_method( "copy_constructor", &copy_constructor );
+    .define_singleton_method( "copy_constructor", &copy_constructor )
+    .define_singleton_method( "eye", &mat_eye, (Arg("rows"), Arg("cols"), Arg("type") = CV_64F) );
 
   define_class_under< Matx33d >( rb_mCVRice, "Matx33d" )
     .define_constructor( Constructor<Matx33d>() );

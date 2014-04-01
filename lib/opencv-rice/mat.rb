@@ -37,6 +37,10 @@ module CVRice
       def rows( arr )
         Mat.new arr
       end
+
+      def identity( r, c = r, type = CV_64F )
+        Mat::eye( r, c, type )
+      end
     end
 
     alias_method :svd_c, :svd

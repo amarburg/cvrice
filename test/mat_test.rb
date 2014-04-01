@@ -125,6 +125,24 @@ class TestMat < Minitest::Test
 
   end
 
+
+  def test_eye
+    m = Mat.identity( 3 )
+    assert_equal 3, m.rows
+    assert_equal 3, m.cols
+    assert_equal Mat::CV_64F, m.type
+
+    3.times.each { |r|
+      3.times.each { |c|
+        if r==c
+          assert_equal 1, m[r,c]
+        else
+          assert_equal 0, m[r,c]
+        end
+      }
+    }
+  end
+
 end
 
 
