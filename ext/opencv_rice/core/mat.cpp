@@ -35,6 +35,20 @@ float mat_at_f( Mat const &m, int r, int c = 0) {
   }
 }
 
+void mat_set_d( Mat &m, int r, int c, double val ) {
+  switch(m.depth()) {
+    case CV_32F:
+      m.at<float>(r,c) = val;
+      break;
+    case CV_64F:
+      m.at<double>(r,c) = val;
+      break;
+    default:
+      rb_raise( rb_eTypeError, "Haven't handled this case in mat_set_d (%d)", m.depth() );
+  }
+}
+
+
 int mat_get_rows( const Mat &m ) { return m.rows; }
 int mat_get_cols( const Mat &m ) { return m.cols; }
 
@@ -53,6 +67,28 @@ void mat_svd( const Mat &m, Mat &w, Mat &u, Mat &vt, int flags = 0 )
   SVD::compute( m, w, u, vt, flags );
 }
 
+Object mat_to_a( Mat &m )
+{
+  Array arr;
+
+  int num_rows = m.rows, num_cols = m.cols, i = 0;
+  double *dbl = m.ptr<double>(0);
+
+  for( int r = 0; r < num_rows; ++r ) {
+    Array row;
+    for( int c = 0; c < num_cols; ++c, ++i ) {
+      row.push( dbl[i] );
+    }
+
+    arr.push( row );
+  }
+
+  return arr;
+}
+
+
+//=========================================================
+
 void init_mat( Module &rb_mCVRice )
 {
   Data_Type<Mat> rb_cMat = define_class_under< Mat >( rb_mCVRice, "Mat" )
@@ -61,6 +97,8 @@ void init_mat( Module &rb_mCVRice )
     .define_method( "cols", &mat_get_cols )
     .define_method( "at_d", &mat_at_d, (Arg("r"), Arg("c") = 0) )
     .define_method( "at_f", &mat_at_f, (Arg("r"), Arg("c") = 0) )
+    .define_method( "set_d", &mat_set_d )
+    .define_method( "to_a", &mat_to_a )
     .define_method( "svd", &mat_svd, 
         (Arg("w"), Arg("u"), Arg("vt"), Arg("flags") = 0 ) )
     .define_singleton_method( "copy_constructor", &copy_constructor );

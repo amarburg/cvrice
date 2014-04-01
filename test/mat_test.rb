@@ -13,15 +13,15 @@ class TestMat < Minitest::Test
     [ [1.5,2,3.2], [-4.4,5,6] ]
   end
 
-  def assert_mat_equals_arr( mat, which = "")
+  def assert_mat_equals_arr( mat, which = "", test_array = arr)
     assert_instance_of CVRice::Mat, mat
-    assert_equal arr.length, mat.rows
-    assert_equal arr.first.length, mat.cols
+    assert_equal test_array.length, mat.rows
+    assert_equal test_array.first.length, mat.cols
 
-    arr.length.times { |r|
-      arr.first.length.times { |c|
+    test_array.length.times { |r|
+      test_array.first.length.times { |c|
         #puts "%s: %d, %d, %.1f, %.1f" % [which, r,c,arr[r][c], mat.at_f(r,c)]
-        assert_in_delta arr[r][c], mat.at_d(r,c), 1e-2
+        assert_in_delta test_array[r][c], mat.at_d(r,c), 1e-2
       }
     }
   end
@@ -36,6 +36,42 @@ class TestMat < Minitest::Test
     assert_mat_equals_arr Mat.new( arr ), "Mat.new arr"
     assert_mat_equals_arr Mat.new( Matrix.rows( arr )), "Mat.new matrix"
     assert_mat_equals_arr Mat.new( Mat.new arr ), "Mat.new Mat.new arr"
+  end
+
+  def assert_arr_equals_arr( a, which = "" )
+    assert_equal 2, a.length
+    arr.length.times { |r|
+      assert_equal 3, a[r].length
+
+      arr[r].length.times { |c|
+        assert_in_delta arr[r][c], a[r][c], 1e-2
+      }
+    }
+  end
+
+  def test_to_a
+    mat = Mat.new( arr )
+    a = mat.to_a
+    assert_arr_equals_arr a, "to_a"
+  end
+
+  def test_to_Matrix
+    mat = Mat.new( arr )
+    m = mat.to_Matrix
+    assert_arr_equals_arr m.to_a, "to_Matrix"
+  end
+
+  def test_set_d
+    mat = Mat.new( arr )
+    assert_mat_equals_arr mat, "test_set_d"
+    mat.set_d( 0,0, 0.0 )
+    mat.set_d( 1,2, 5.5 )
+
+    # modify the template as well
+    test_arr = arr
+    test_arr[0][0] = 0.0
+    test_arr[1][2] = 5.5
+    assert_mat_equals_arr mat, "test_set_d", test_arr
   end
 
   def test_svd

@@ -44,17 +44,17 @@ module CVRice
       [u,w,vt]
     end
 
-    def to_a
-      arr = rows.times.map { |i|
-        cols.times.map { |j|
-          at_d(i,j)
-        }
-      }
+    #def to_a
+    #  arr = rows.times.map { |i|
+    #    cols.times.map { |j|
+    #      at_d(i,j)
+    #    }
+    #  }
 
-      arr.flatten!(1) if rows == 1 or cols == 1
+    #  arr.flatten!(1) if rows == 1 or cols == 1
 
-      arr 
-    end
+    #  arr 
+    #end
 
     def to_Matrix
       Matrix.rows to_a
