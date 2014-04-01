@@ -7,12 +7,25 @@ require 'matrix'
 require_relative "common"
 
 class TestMat < Minitest::Test
+  parallelize_me!
   include CVRice
 
   def arr
     [ [1.5,2,3.2], [-4.4,5,6] ]
   end
 
+  def test_1d_readers
+    arr = [[0,1,2,3,4,5,6,7,8]]
+    mat = Mat.new arr
+    assert_instance_of CVRice::Mat, mat
+    assert_equal 9, mat.rows
+    assert_equal 1, mat.cols
+
+    9.times { |r|
+      assert_in_delta arr[0][r], mat[r], 1e-2
+    }
+  end
+  
   def assert_mat_equals_arr( mat, which = "", test_array = arr)
     assert_instance_of CVRice::Mat, mat
     assert_equal test_array.length, mat.rows
@@ -22,6 +35,7 @@ class TestMat < Minitest::Test
       test_array.first.length.times { |c|
         #puts "%s: %d, %d, %.1f, %.1f" % [which, r,c,arr[r][c], mat.at_f(r,c)]
         assert_in_delta test_array[r][c], mat.at_d(r,c), 1e-2
+        assert_in_delta test_array[r][c], mat[r,c], 1e-2
       }
     }
   end
@@ -93,6 +107,7 @@ class TestMat < Minitest::Test
     }
     assert_equal 9, count
   end
+
 
   def test_svd
     m = Mat.new [ [1,2,3],[4,5,6],[7,8,9] ]

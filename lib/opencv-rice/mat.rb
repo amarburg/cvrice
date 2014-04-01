@@ -69,7 +69,7 @@ module CVRice
       Vector[ *(to_a.flatten(1)) ]
     end
 
-    def [](a, b=0)
+    def [](r,c=0)
       at_d(r,c)
     end
 
