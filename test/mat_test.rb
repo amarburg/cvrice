@@ -74,6 +74,26 @@ class TestMat < Minitest::Test
     assert_mat_equals_arr mat, "test_set_d", test_arr
   end
 
+  def test_each
+    mat = Mat.new [[0,1,2,3,4,5,6,7,8]]
+
+    # As enumerator
+    count = 0
+    mat.each.with_index {  |x,i|
+      assert_in_delta i, x, 1e-2
+      count += 1
+    }
+    assert_equal 9, count
+
+    # W/o enumerator
+    count = 0
+    mat.each {  |x|
+      assert_in_delta count, x, 1e-2
+      count += 1
+    }
+    assert_equal 9, count
+  end
+
   def test_svd
     m = Mat.new [ [1,2,3],[4,5,6],[7,8,9] ]
     u,d,vt = m.svd
