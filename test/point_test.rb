@@ -41,9 +41,34 @@ class TestPoint2d < Minitest::Test
   def point_klass; Point2d; end
 
   def test_constructor
-    pt = point_klass.new( 1.1, 2.2 )
-    assert_in_delta 1.1, pt.x, 1e-3
-    assert_in_delta 2.2, pt.y, 1e-3
+    [ point_klass.new( 1.1, 2.2 ),
+      point_klass.new( Matrix.rows [ [1.1, 2.2] ] ),
+      point_klass.new( [1.1, 2.2] ),
+      point_klass.new( Vector[ 1.1, 2.2 ] ),
+      point_klass.new( Point2d.new( 1.1, 2.2 )),
+      point_klass.new( Point2f.new( 1.1, 2.2 )),
+      point_klass.new( 2.2, 4.4, 2.0 ) ].each { |pt|
+        assert_in_delta 1.1, pt.x, 1e-3
+        assert_in_delta 2.2, pt.y, 1e-3
+      }
+  end
+
+  def test_subtract
+    a = Point2d.new( 1.0, 2.0 )
+    b = Point2d.new( 0.5, 0.75 )
+    c = a-b
+
+    assert_in_delta 0.5, c.x, 1e-2
+    assert_in_delta 1.25, c.y, 1e-2
+  end
+
+  def test_homogeneous
+    a = Point2d.new( 3.3, 4.4 )
+    v = a.homogeneous
+
+    assert_instance_of CVRice::Vec3d, v
+    assert_in_delta 3.3, v[0], 1e-2
+    assert_in_delta 4.4, v[1], 1e-2
   end
 
 end

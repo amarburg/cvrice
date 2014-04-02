@@ -22,8 +22,12 @@ module CVRice
           case arg
           when Array, Matrix
             CVRice::from_ruby arg
+          when Vector
+            Mat::columns [ arg.to_a ]
           when CVRice::Mat
-            CVRice::Mat::copy_constructor arg
+            Mat::copy_constructor arg
+          else 
+            raise "Don't know how to make a Mat from a #{args.first.class}"
           end
         when 2..3
           if Numeric === args[0] and Numeric === args[1]
@@ -38,9 +42,25 @@ module CVRice
         Mat.new arr
       end
 
+      def columns( arr )
+        Mat.rows(arr.transpose)
+      end
+
+      def diagonal( *elems )
+        Mat.new Matrix.diagonal(*elems)
+      end
+
       def identity( r, c = r, type = CV_64F )
         Mat::eye( r, c, type )
       end
+    end
+
+    # For compatability with Matrix
+    alias_method :row_count, :rows
+    alias_method :column_count, :cols
+
+    def inspect
+      "Mat: %d x %d" % [rows,cols]
     end
 
     alias_method :svd_c, :svd
@@ -59,19 +79,61 @@ module CVRice
       [u,w,vt]
     end
 
-    def each
-      raise "Mat::each only makes sense if Matrix has 1 row or 1 column" unless rows == 1 or cols == 1
-
-      if block_given?
-        if cols == 1
-          rows.times.each { |r| yield at_d(r,0) }
-        elsif rows == 1
-          cols.times.each { |c| yield at_d(0,c) }
-        end
+    def *(b)
+      case b
+      when Vector,Matrix,Mat
+        mult_mat(b)
+      when Vec3d
+        mult_mat( b.to_mat )
+      when Numeric
+        mult_const(b)
       else
+        raise "Don't know how to multiply a Matrix be a #{b.class}"
+      end
+    end
+
+    def each
+      if block_given?
+        rows.times { |r|
+          cols.times { |c|
+            yield at_d(r,c)
+          }
+        }
+      else
+      raise "Enumerator form of Mat::each only makes sense if Matrix has 1 row or 1 column" unless rows == 1 or cols == 1
         # Assumed to be less efficient because the temporary Array is created...
         (to_a.flatten(1)).each
       end
+    end
+
+    def each_with_index
+      if block_given?
+        rows.times { |r|
+          cols.times { |c|
+            yield at_d(r,c),r,c
+          }
+        }
+      else
+        raise "Enumerator form of Mat::each_with_index doesn't exist (yet)..."
+      end
+    end
+
+    def map
+      if block_given?
+        out = Mat.new rows, cols, type
+        rows.times {|r| cols.times {|c|
+          out.set_d( r, c, (yield at_d(r,c)) )
+        } }
+        out
+      else
+        raise "Enumerator for of Mat::map doesn't exist (yet)..."
+      end
+    end
+
+    def row_vectors
+      to_a.map! { |arr|
+        Vector[ *arr ]
+      }
     end
 
     def to_Matrix

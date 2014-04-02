@@ -55,17 +55,21 @@ int mat_get_cols( const Mat &m ) { return m.cols; }
 void takes_a_mat( Mat mat ) { ; }
 void takes_a_mat_ref( Mat const &mat ) { ; }
 
-void takes_a_matx33d( Matx33d mat ) { ; }
-
 // A set of simply constructor functions 
 Mat make_a_mat( Mat mat ) { return mat; }
-
 Mat copy_constructor( Mat const &in ) { return Mat(in); }
 
 void mat_svd( const Mat &m, Mat &w, Mat &u, Mat &vt, int flags = 0 )
 {
   SVD::compute( m, w, u, vt, flags );
 }
+
+Mat mat_transpose( const Mat &m ) { return m.t(); }
+Mat mat_mult_mat( const Mat &a, const Mat &b ) { return a*b; }
+Mat mat_mult_const( const Mat &a, const double b ) { return a*b; }
+Mat mat_subtract( const Mat &a, const Mat &b ) { return a-b; }
+Mat mat_pinv( const Mat &m ) { return m.inv( DECOMP_SVD ); }
+Size mat_size( const Mat &m ) { return m.size(); }
 
 // TODO:  Done this way because Mat::eye returns a MatExpr ... can I integrate
 // MatExpr into the library?
@@ -110,11 +114,14 @@ void init_mat( Module &rb_mCVRice )
     .define_method( "to_a", &mat_to_a )
     .define_method( "svd", &mat_svd, 
         (Arg("w"), Arg("u"), Arg("vt"), Arg("flags") = 0 ) )
+    .define_method( "pinv", &mat_pinv )
+    .define_method( "-", &mat_subtract )
+    .define_method( "mult_mat", &mat_mult_mat )
+    .define_method( "mult_const", &mat_mult_const )
+    .define_method( "transpose", &mat_transpose )
+    .define_method( "size", &mat_size )
     .define_singleton_method( "copy_constructor", &copy_constructor )
     .define_singleton_method( "eye", &mat_eye, (Arg("rows"), Arg("cols"), Arg("type") = CV_64F) );
-
-  define_class_under< Matx33d >( rb_mCVRice, "Matx33d" )
-    .define_constructor( Constructor<Matx33d>() );
 
 //  rb_mCVRice.define_module_function( "cvmat_to_mat", &cvmat_to_mat );
 //  rb_mCVRice.define_module_function( "mat_to_cvmat", &mat_to_cvmat );
@@ -126,8 +133,6 @@ void init_mat( Module &rb_mCVRice )
   rb_mCVRice.define_module_function( "takes_a_mat_ref", &takes_a_mat_ref );
   rb_mCVRice.define_module_function( "make_a_mat", &make_a_mat );
   rb_mCVRice.define_module_function( "from_ruby", &from_ruby<cv::Mat> );
-
-  rb_mCVRice.define_module_function( "takes_a_matx33d", &takes_a_matx33d );
 
   define_class_under< _InputArray >( rb_mCVRice, "InputArray" );
   define_implicit_cast<Mat, _InputArray>();

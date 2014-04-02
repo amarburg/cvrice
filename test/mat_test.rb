@@ -125,6 +125,29 @@ class TestMat < Minitest::Test
 
   end
 
+  def test_subtract
+    a = Mat.new [ [1.0, 2.0], [2.0, 1.0] ]
+   b = a.transpose
+
+   d = a-b
+
+   assert_instance_of Mat, d
+   assert_equal 2, d.rows
+   assert_equal 2, d.cols
+   2.times.each { |r| 2.times.each { |c| assert_in_delta 0, d[r,c],1e-2 }}
+  end
+
+  def test_map
+    a = Mat.new [ [ 0.0, 2.0 ], [2.0, 4.0] ]
+    d = a.map { |x| x/2 }
+
+    assert_instance_of Mat, d
+    assert_equal 2, d.rows
+    assert_equal 2, d.cols
+    2.times.each { |r| 2.times.each { |c| assert_in_delta (r+c), d[r,c],1e-2 }}
+  end
+
+
 
   def test_eye
     m = Mat.identity( 3 )
@@ -146,11 +169,3 @@ class TestMat < Minitest::Test
 end
 
 
-class TestMatx33d < Minitest::Test
-
-  include CVRice
-
-  def test_construct_from_matrix
-    takes_a_matx33d Matrix.rows [ [1,2,3],[4,5,6],[7,8,9]]
-  end
-end
