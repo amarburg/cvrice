@@ -67,6 +67,7 @@ void mat_svd( const Mat &m, Mat &w, Mat &u, Mat &vt, int flags = 0 )
 Mat mat_transpose( const Mat &m ) { return m.t(); }
 Mat mat_mult_mat( const Mat &a, const Mat &b ) { return a*b; }
 Mat mat_mult_const( const Mat &a, const double b ) { return a*b; }
+Mat mat_add( const Mat &a, const Mat &b ) { return a+b; }
 Mat mat_subtract( const Mat &a, const Mat &b ) { return a-b; }
 Mat mat_pinv( const Mat &m ) { return m.inv( DECOMP_SVD ); }
 Size mat_size( const Mat &m ) { return m.size(); }
@@ -115,6 +116,7 @@ void init_mat( Module &rb_mCVRice )
     .define_method( "svd", &mat_svd, 
         (Arg("w"), Arg("u"), Arg("vt"), Arg("flags") = 0 ) )
     .define_method( "pinv", &mat_pinv )
+    .define_method( "+", &mat_add )
     .define_method( "-", &mat_subtract )
     .define_method( "mult_mat", &mat_mult_mat )
     .define_method( "mult_const", &mat_mult_const )
@@ -136,8 +138,6 @@ void init_mat( Module &rb_mCVRice )
 
   define_class_under< _InputArray >( rb_mCVRice, "InputArray" );
   define_implicit_cast<Mat, _InputArray>();
-
-  define_class_under< cv::String >( rb_mCVRice, "String" );
 }
 
 //template<>

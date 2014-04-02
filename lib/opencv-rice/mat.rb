@@ -143,7 +143,6 @@ module CVRice
       a = Matx33d::from_ruby to_a
     end
 
-
     def to_Matrix
       Matrix.rows to_a
     end
@@ -157,9 +156,24 @@ module CVRice
       at_d(r,c)
     end
 
-
     def to_CvMat
       CVRice::mat_to_cvmat( self )
+    end
+
+    def print( opts = {} )
+      caption = case opts
+                when ::String
+                  opts
+                when Hash
+                  opts[:caption]
+                end
+
+      puts "#{caption}  (%dx%d)= " % [rows,cols] if caption
+      rows.times { |r|
+        puts cols.times.map { |c| 
+          "%.5f" % at_d(r,c)
+        }.join(' ')
+      }
     end
   end
 end

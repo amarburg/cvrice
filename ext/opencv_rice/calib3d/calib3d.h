@@ -13,7 +13,7 @@ namespace CVRice {
                     LMEDS = cv::LMEDS,
                     RANSAC = cv::RANSAC };
 
-  //TODO.  I dislike this indirection.  Figure out how to live
+  //TODO.  I dislike this indirection.  Figure out how to live with
   // InputArray
   cv::Mat findHomography( const cv::Mat src, const cv::Mat dst, 
       int method = ALL_POINTS, double reprojThreshold = 3 );

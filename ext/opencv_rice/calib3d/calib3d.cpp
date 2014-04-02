@@ -12,15 +12,10 @@ using namespace cv;
 
 namespace CVRice {
 
-  enum EstMethods { ALL_POINTS = 0,
-                    LMEDS = cv::LMEDS,
-                    RANSAC = cv::RANSAC };
-
   //TODO.  I dislike this indirection.  Figure out how to live
   // InputArray
   Mat findHomography( const Mat src, const Mat dst, 
-      int method = ALL_POINTS,
-      double reprojThreshold = 3 )
+      int method, double reprojThreshold )
   { return cv::findHomography( src, dst, method, reprojThreshold ); }
 
   void init_calib3d( Module &parent )

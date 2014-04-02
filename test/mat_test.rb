@@ -132,6 +132,17 @@ class TestMat < Minitest::Test
 
   end
 
+  def test_add
+    a = Mat.new [ [0.0, 0.5], [0.5, 1.0] ]
+   b = a.transpose
+   d = a+b
+
+   assert_instance_of Mat, d
+   assert_equal 2, d.rows
+   assert_equal 2, d.cols
+   2.times.each { |r| 2.times.each { |c| assert_in_delta (r+c), d[r,c],1e-2 }}
+  end
+
   def test_subtract
     a = Mat.new [ [1.0, 2.0], [2.0, 1.0] ]
    b = a.transpose
