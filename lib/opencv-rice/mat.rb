@@ -21,7 +21,7 @@ module CVRice
           arg = args.pop
           case arg
           when Array, Matrix
-            CVRice::from_ruby arg
+            Mat::from_ruby arg
           when Vector
             Mat::columns [ arg.to_a ]
           when CVRice::Mat
@@ -135,6 +135,14 @@ module CVRice
         Vector[ *arr ]
       }
     end
+
+    # TODO:  Need this now, could be done many ways, each
+    # better than this...
+    def to_matx33d
+      raise "This mat isn't 3x3, can't convert to matx33d" unless rows ==3 and cols == 3
+      a = Matx33d::from_ruby to_a
+    end
+
 
     def to_Matrix
       Matrix.rows to_a

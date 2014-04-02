@@ -85,6 +85,13 @@ class TestMat < Minitest::Test
     assert_arr_equals_arr m.to_a, "to_Matrix"
   end
 
+  def test_to_matx33d
+    mat = Mat.identity( 3 )
+    matx = mat.to_matx33d
+
+    assert_instance_of Matx33d, matx
+  end
+
   def test_set_d
     mat = Mat.new( arr )
     assert_mat_equals_arr mat, "test_set_d"

@@ -121,7 +121,8 @@ void init_mat( Module &rb_mCVRice )
     .define_method( "transpose", &mat_transpose )
     .define_method( "size", &mat_size )
     .define_singleton_method( "copy_constructor", &copy_constructor )
-    .define_singleton_method( "eye", &mat_eye, (Arg("rows"), Arg("cols"), Arg("type") = CV_64F) );
+    .define_singleton_method( "eye", &mat_eye, (Arg("rows"), Arg("cols"), Arg("type") = CV_64F) )
+     .define_singleton_method( "from_ruby", &from_ruby<cv::Mat> );
 
 //  rb_mCVRice.define_module_function( "cvmat_to_mat", &cvmat_to_mat );
 //  rb_mCVRice.define_module_function( "mat_to_cvmat", &mat_to_cvmat );
@@ -132,7 +133,6 @@ void init_mat( Module &rb_mCVRice )
   rb_mCVRice.define_module_function( "takes_a_mat", &takes_a_mat );
   rb_mCVRice.define_module_function( "takes_a_mat_ref", &takes_a_mat_ref );
   rb_mCVRice.define_module_function( "make_a_mat", &make_a_mat );
-  rb_mCVRice.define_module_function( "from_ruby", &from_ruby<cv::Mat> );
 
   define_class_under< _InputArray >( rb_mCVRice, "InputArray" );
   define_implicit_cast<Mat, _InputArray>();

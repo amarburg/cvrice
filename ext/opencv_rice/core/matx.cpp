@@ -21,7 +21,10 @@ void takes_a_matx33d( Matx33d mat ) { ; }
 void init_matx( Module &rb_mCVRice )
 {
   define_class_under< Matx33d >( rb_mCVRice, "Matx33d" )
-    .define_constructor( Constructor<Matx33d>() );
+    .define_constructor( Constructor<Matx33d>() )
+     .define_singleton_method( "from_ruby", &from_ruby<cv::Matx33d> );
+
+  define_implicit_cast<Matx33d, Mat>();
 
   rb_mCVRice.define_module_function( "takes_a_matx33d", &takes_a_matx33d );
 }
