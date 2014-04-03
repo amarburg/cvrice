@@ -31,7 +31,7 @@ module CVRice
           end
         when 2..3
           if Numeric === args[0] and Numeric === args[1]
-            Mat.new_c *(args.first(3))
+            Mat.new_c( *(args.first(3)) )
           end
         else
           raise "Don't know how to make a Mat from: %s" % args.map {|x| x.inspect}.join(', ')
@@ -140,7 +140,7 @@ module CVRice
     # better than this...
     def to_matx33d
       raise "This mat isn't 3x3, can't convert to matx33d" unless rows ==3 and cols == 3
-      a = Matx33d::from_ruby to_a
+      Matx33d::from_ruby to_a
     end
 
     def to_Matrix

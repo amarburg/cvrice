@@ -13,7 +13,7 @@ typedef std::vector<cv::KeyPoint> KeyPointVector;
 
 template<>
 inline
-std::vector<cv::KeyPoint> from_ruby< std::vector<cv::KeyPoint> >( Rice::Object o )
+KeyPointVector from_ruby< KeyPointVector >( Rice::Object o )
 {
   Rice::Array arr( o );
   std::vector<cv::KeyPoint> vec;
