@@ -163,7 +163,9 @@ module CVRice
     def print( opts = {} )
       caption = case opts
                 when ::String
-                  opts
+                  st = opts
+                  opts = {}
+                  st
                 when Hash
                   opts[:caption]
                 end
@@ -171,7 +173,15 @@ module CVRice
       puts "#{caption}  (%dx%d)= " % [rows,cols] if caption
       rows.times { |r|
         puts cols.times.map { |c| 
-          "%.5f" % at_d(r,c)
+          format = case opts[:format]
+                   when :exp
+                     "%-5.2e" 
+                   when nil
+                     "%.5f"
+                   else
+                     opts[:format]
+                   end
+          format % at_d(r,c)
         }.join(' ')
       }
     end
