@@ -70,6 +70,7 @@ Mat mat_mult_const( const Mat &a, const double b ) { return a*b; }
 Mat mat_add( const Mat &a, const Mat &b ) { return a+b; }
 Mat mat_subtract( const Mat &a, const Mat &b ) { return a-b; }
 Mat mat_pinv( const Mat &m ) { return m.inv( DECOMP_SVD ); }
+Mat mat_inv(  const Mat &m ) { return m.inv(); }
 Size mat_size( const Mat &m ) { return m.size(); }
 
 // TODO:  Done this way because Mat::eye returns a MatExpr ... can I integrate
@@ -115,6 +116,7 @@ void init_mat( Module &rb_mCVRice )
     .define_method( "to_a", &mat_to_a )
     .define_method( "svd", &mat_svd, 
         (Arg("w"), Arg("u"), Arg("vt"), Arg("flags") = 0 ) )
+    .define_method( "inv", &mat_inv )
     .define_method( "pinv", &mat_pinv )
     .define_method( "+", &mat_add )
     .define_method( "-", &mat_subtract )
