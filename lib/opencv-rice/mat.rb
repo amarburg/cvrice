@@ -158,6 +158,12 @@ module CVRice
       Matx33d::from_ruby to_a
     end
 
+    def to_matx33f
+      raise "This mat isn't 3x3, can't convert to matx33f" unless rows ==3 and cols == 3
+      Matx33f::from_ruby to_a
+    end
+
+
     def to_Matrix
       Matrix.rows to_a
     end

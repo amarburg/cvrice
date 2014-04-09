@@ -23,6 +23,18 @@ Rice::Object to_ruby< std::vector<cv::DMatch> >( std::vector<cv::DMatch> const &
   return out;
 }
 
+template<>
+  inline
+std::vector<cv::DMatch> from_ruby< std::vector<cv::DMatch> >( Rice::Object obj )
+{
+  Rice::Array vec( obj );
+  std::vector<cv::DMatch> out;
+  for( Rice::Array::iterator itr = vec.begin(); itr != vec.end(); ++itr ) {
+    out.push_back( from_ruby< cv::DMatch >( *itr ) );
+  }
+
+  return out;
+}
 
 //template<>
 //  inline

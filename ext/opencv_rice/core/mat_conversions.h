@@ -11,5 +11,6 @@
 template<> cv::Mat from_ruby<cv::Mat>( Rice::Object obj );
 template<> cv::InputArray from_ruby< cv::InputArray >(Rice::Object obj);
 template<> cv::Matx33d from_ruby< cv::Matx33d >( Rice::Object obj );
+template<> cv::Matx33f from_ruby< cv::Matx33f >( Rice::Object obj );
 
 #endif

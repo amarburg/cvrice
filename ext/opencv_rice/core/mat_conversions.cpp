@@ -114,8 +114,8 @@ cv::Matx33d from_ruby< cv::Matx33d >( Rice::Object obj )
     if( 3 != a.size() ) 
       rb_raise( rb_eTypeError, "Trying to generate Matx from Array with wrong number of rows" );
 
-    int num_rows = 3, num_cols = 3;
-    Mat m( num_rows, num_cols, CV_64F );
+    const int num_rows = 3, num_cols = 3;
+    Matx33d m;
 
     for( int r = 0; r < num_rows; ++r ) {
 
@@ -128,7 +128,7 @@ cv::Matx33d from_ruby< cv::Matx33d >( Rice::Object obj )
         rb_raise( rb_eTypeError, "Trying to generate Matx from Array with wrong number of columns" );
 
       for( int c = 0; c < num_cols; ++c ) {
-        m.at<double>(r,c) = rb_num2dbl(row[c]);
+        m(r,c) = rb_num2dbl(row[c]);
       } 
     }
 
@@ -142,4 +142,54 @@ cv::Matx33d from_ruby< cv::Matx33d >( Rice::Object obj )
 }
 
 
+
+template<> 
+cv::Matx33f from_ruby< cv::Matx33f >( Rice::Object obj )
+{
+  if(obj.rb_type() == T_DATA)
+  {
+    return *Data_Type< Matx33f >::from_ruby(obj);
+  } 
+
+  if( !RTEST(rb_cMatrix ) ) rb_cMatrix = matrix_load();
+
+  if( obj.is_instance_of( rb_cMatrix ) ) {
+    obj =  rb_funcall( obj, rb_intern("to_a") ,0 );
+  } 
+
+  if( obj.rb_type() == T_ARRAY ) {
+    const Array a( obj );
+
+    if( a[0].rb_type() != T_ARRAY )
+      rb_raise( rb_eTypeError, "Trying to convert from Array which does not contains Arrays, it contains %s", a[0].class_of().name().c_str() );
+
+    if( 3 != a.size() ) 
+      rb_raise( rb_eTypeError, "Trying to generate Matx from Array with wrong number of rows" );
+
+    const int num_rows = 3, num_cols = 3;
+    Matx33f m;
+
+    for( int r = 0; r < num_rows; ++r ) {
+
+      if( a[r].rb_type() != T_ARRAY )
+        rb_raise( rb_eTypeError, "Found element in Array which is not Array: (%s)", a[0].class_of().name().c_str() );
+
+      const Array row( a[r] );
+
+      if( 3 != row.size() ) 
+        rb_raise( rb_eTypeError, "Trying to generate Matx from Array with wrong number of columns" );
+
+      for( int c = 0; c < num_cols; ++c ) {
+        m(r,c) = rb_num2dbl(row[c]);
+      } 
+    }
+
+    return m;
+  } 
+
+  std::string s("Unable to convert a ");
+  s += obj.class_of().name().c_str();
+  s += " to a Matx33f";
+  rb_raise( rb_eTypeError, "%s", s.c_str() );
+}
 
