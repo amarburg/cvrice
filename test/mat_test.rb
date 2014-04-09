@@ -130,6 +130,25 @@ class TestMat < Minitest::Test
     m = Mat.new [ [1,2,3],[4,5,6],[7,8,9] ]
     u,d,vt = m.svd
 
+    # TODO: complete test
+  end
+
+  def test_convert_to
+    m = Mat.new  [ [1.0, 2.0], [2.0, 3.0] ]
+
+    assert_equal Mat::CV_64F, m.depth
+    assert_equal 1, m.channels
+
+    o = m.convert_to( Mat::CV_8U, 2, 1 )
+    assert_equal Mat::CV_8U, o.depth
+    assert_equal 1, o.channels
+
+    2.times.each { |r|
+      2.times.each {|c|
+        assert_equal ((r+c+1)*2 + 1), o.at_8u( r,c )
+        assert_equal ((r+c+1)*2 + 1), o.at_f( r,c )
+      }
+    }
   end
 
   def test_add
@@ -143,7 +162,7 @@ class TestMat < Minitest::Test
    2.times.each { |r| 2.times.each { |c| assert_in_delta (r+c), d[r,c],1e-2 }}
   end
 
-  def test_subtract
+  def test_subtract_mat
     a = Mat.new [ [1.0, 2.0], [2.0, 1.0] ]
    b = a.transpose
 
@@ -153,6 +172,16 @@ class TestMat < Minitest::Test
    assert_equal 2, d.rows
    assert_equal 2, d.cols
    2.times.each { |r| 2.times.each { |c| assert_in_delta 0, d[r,c],1e-2 }}
+  end
+
+  def test_subtract_float
+    a = Mat.new [ [1.0, 2.0], [2.0, 3.0] ]
+
+    b = a - 1
+    2.times.each { |r| 2.times.each { |c| assert_in_delta (r+c), b[r,c], 1e-2 } }
+
+    d = 1.0 - a
+    2.times.each { |r| 2.times.each { |c| assert_in_delta (1-(r+c+1)), d[r,c], 1e-2 } }
   end
 
   def test_map
@@ -182,6 +211,18 @@ class TestMat < Minitest::Test
         end
       }
     }
+  end
+
+
+  def test_didnt_break_float
+    a = 4.5
+    b = 6.7
+
+    assert_in_delta (4.5+6.7), a+b, 1e-3
+    assert_in_delta (4.5-6.7), a-b, 1e-3
+    assert_in_delta (6.7-4.5), b-a, 1e-3
+    assert_in_delta (6.7*4.5), a*b, 1e-3
+
   end
 
 end

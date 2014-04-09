@@ -18,6 +18,9 @@ using namespace cv;
 //float get_point2f_y( const Point2f &pt ) { return pt.y; };
 //Point2f subtract2f( Point2f a, Point2f b) { return a-b; };
 
+float set_point2d_x( Point2d &pt, const double v ) { return (pt.x=v); };
+float set_point2d_y( Point2d &pt, const double v ) { return (pt.y=v); };
+
 template <typename _T, typename _out>
 _out get_x( const _T &pt ) { return pt.x; };
 
@@ -38,7 +41,10 @@ void init_point( Module &rb_mCVRice ) {
     .define_constructor( Constructor<Point2d, double, double>(), (Arg("x") = 0., Arg("y") = 0. ) )
     .define_method( "x", &get_x<Point2d,double> )
     .define_method( "y", &get_y<Point2d,double> )
-    .define_method( '-', &subtract<Point2d> );
+    .define_method( "x=", &set_point2d_x )
+    .define_method( "y=", &set_point2d_y )
+    .define_method( '-', &subtract<Point2d> )
+    .define_method( "dot", &Point2d::dot );
 
   define_class_under<Point2i>( rb_mCVRice, "Point2i" )
     .define_constructor( Constructor<Point2i, int, int>(), (Arg("x") = 0, Arg("y") = 0) )

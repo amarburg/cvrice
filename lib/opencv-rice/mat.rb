@@ -6,6 +6,11 @@ module CVRice
     include Enumerable
 
     # TODO:  Think of a better way to do this
+    CV_8U = 0
+    CV_8S = 1
+    CV_16U = 2
+    CV_16S = 3
+    CV_32S = 4
     CV_32F = 5
     CV_64F = 6
 
@@ -79,18 +84,27 @@ module CVRice
       [u,w,vt]
     end
 
-    def *(b)
-      case b
-      when Vector,Matrix,Mat
-        mult_mat(b)
-      when Vec3d
-        mult_mat( b.to_mat )
-      when Numeric
-        mult_const(b)
-      else
-        raise "Don't know how to multiply a Matrix be a #{b.class}"
-      end
+    def self.arithmatic_operator( operator, mat_function, const_function, msg = nil )
+
+      msg ||= '"Don\'t know how to %s a #{b.class} from a CVRice::Mat"' % operator
+
+      self.send :define_method, operator, Proc.new { |b|
+        case b
+        when Vector,Matrix,Mat
+          send( mat_function, b )
+        when Vec3d
+          send( mat_function, b.to_mat )
+        when Numeric
+          send( const_function, b )
+        else
+          raise msg
+        end
+      }
     end
+
+    arithmatic_operator :+, :add_mat, :add_const, '"Don\'t know how to add a #{b.class} to a CVRice::Mat"'
+    arithmatic_operator :-, :subtract_mat, :subtract_const, '"Dont\'t know how to subtract a #{b.class} from a CVRice::Mat"'
+    arithmatic_operator :*, :mult_mat, :mult_const, '"Dont\'t know how to multiply a CVRice::Mat by a #{b.class}"'
 
     def each
       if block_given?

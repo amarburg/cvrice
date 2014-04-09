@@ -10,3 +10,7 @@ require 'opencv-rice/point'
 require 'opencv-rice/calib3d'
 require 'opencv-rice/sift'
 
+require 'opencv-rice/highgui'
+
+require 'opencv-rice/ruby_intrinsics'
+

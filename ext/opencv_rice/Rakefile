@@ -6,7 +6,7 @@ require 'rake/clean'
 CLEAN.include('*.o')
 CLOBBER.include('libopencv_rice.so', 'mkrf.log')
 
-SRC = FileList['opencv_rice.cpp','core/*.cpp','highgui/highgui.cpp','calib3d/*.cpp','nonfree/nonfree.cpp','nonfree/sift.cpp']
+SRC = FileList['opencv_rice.cpp','core/*.cpp','highgui/*.cpp','imgproc/*.cpp','calib3d/*.cpp','nonfree/nonfree.cpp','nonfree/sift.cpp']
 OBJ = SRC.ext('o')
 CC = 'gcc'
 CPP = 'g++'

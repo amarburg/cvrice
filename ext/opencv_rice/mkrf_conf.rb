@@ -4,7 +4,8 @@ require_relative '../../tasks/directories'
 
 sources = %w( opencv_rice.cpp
               core/*.cpp
-              highgui/highgui.cpp
+              highgui/*.cpp
+              imgproc/*.cpp
               calib3d/*.cpp
               nonfree/nonfree.cpp
               nonfree/sift.cpp )

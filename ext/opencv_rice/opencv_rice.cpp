@@ -5,6 +5,7 @@ using namespace Rice;
 
 #include "core/core.h"
 #include "highgui/highgui.h"
+#include "imgproc/imgproc.h"
 #include "calib3d/calib3d.h"
 #include "nonfree/nonfree.h"
 
@@ -16,6 +17,7 @@ void Init_libopencv_rice( void ) {
 
   init_core( rb_mCVRice );
   init_highgui( rb_mCVRice );
+  init_imgproc( rb_mCVRice );
   init_nonfree( rb_mCVRice );
   CVRice::init_calib3d( rb_mCVRice );
 }

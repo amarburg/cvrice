@@ -71,4 +71,25 @@ class TestPoint2d < Minitest::Test
     assert_in_delta 4.4, v[1], 1e-2
   end
 
+  def test_accessors
+    a = Point2d.new( 3.3, 4.4 )
+    assert_in_delta 3.3, a.x, 1e-2
+    assert_in_delta 4.4, a.y, 1e-2
+
+    assert_in_delta 5.5, (a.x = 5.5), 1e-3
+    assert_in_delta -1e3, (a.y = -1e3), 1e-3
+    assert_in_delta 5.5, a.x, 1e-2
+    assert_in_delta -1e3, a.y, 1e-2
+  end
+
+
+  def test_dot
+    a = Point2d.new( 3.3, 4.4 )
+    b = Point2d.new( 1.0, 2.0 )
+
+    ans = 3.3*1.0 + 4.4*2.0
+    assert_in_delta ans, a.dot(b), 1e-6
+    assert_in_delta ans, b.dot(a), 1e-6
+  end
+
 end

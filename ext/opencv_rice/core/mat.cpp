@@ -16,6 +16,8 @@ using namespace cv;
 // TODO:  These are madly non-type-safe.  
 double mat_at_d( Mat const &m, int r, int c = 0) {
   switch(m.depth()) {
+    case CV_8U:
+      return 1.0 * m.at<unsigned char>(r,c);
     case CV_32F:
       return (double)m.at<float>(r,c);
     case CV_64F:
@@ -26,10 +28,21 @@ double mat_at_d( Mat const &m, int r, int c = 0) {
 }
 float mat_at_f( Mat const &m, int r, int c = 0) {
   switch(m.depth()) {
+    case CV_8U:
+      return 1.0 * m.at<unsigned char>(r,c);
     case CV_32F:
       return m.at<float>(r,c);
     case CV_64F:
       return (float)m.at<double>(r,c);
+    default:
+      rb_raise( rb_eTypeError, "Haven't handled this case in mat_at_f" );
+  }
+}
+
+unsigned char mat_at_8u( Mat const &m, int r, int c = 0 ) {
+  switch(m.depth()) {
+    case CV_8U:
+      return m.at<unsigned char>(r,c);
     default:
       rb_raise( rb_eTypeError, "Haven't handled this case in mat_at_f" );
   }
@@ -64,11 +77,23 @@ void mat_svd( const Mat &m, Mat &w, Mat &u, Mat &vt, int flags = 0 )
   SVD::compute( m, w, u, vt, flags );
 }
 
+Mat mat_convert_to( const Mat &m, int rtype, double alpha, double beta )
+{
+Mat out;
+m.convertTo( out, rtype, alpha, beta );
+return out;
+}
+
 Mat mat_transpose( const Mat &m ) { return m.t(); }
+
+Mat mat_add_mat( const Mat &a, const Mat &b ) { return a+b; }
+Mat mat_add_const( const Mat &a, const double b ) { return a+b; }
+Mat mat_subtract_mat( const Mat &a, const Mat &b ) { return a-b; }
+Mat mat_subtract_const( const Mat &a, const double b ) { return a-b; }
+Mat mat_subtract_reverse_const( const Mat &a, const double b ) { return b-a; }
 Mat mat_mult_mat( const Mat &a, const Mat &b ) { return a*b; }
 Mat mat_mult_const( const Mat &a, const double b ) { return a*b; }
-Mat mat_add( const Mat &a, const Mat &b ) { return a+b; }
-Mat mat_subtract( const Mat &a, const Mat &b ) { return a-b; }
+
 Mat mat_pinv( const Mat &m ) { return m.inv( DECOMP_SVD ); }
 Mat mat_inv(  const Mat &m ) { return m.inv(); }
 Size mat_size( const Mat &m ) { return m.size(); }
@@ -110,16 +135,23 @@ void init_mat( Module &rb_mCVRice )
     .define_method( "rows", &mat_get_rows )
     .define_method( "cols", &mat_get_cols )
     .define_method( "type", &Mat::type )
+    .define_method( "depth", &Mat::depth )
+    .define_method( "channels", &Mat::channels )
     .define_method( "at_d", &mat_at_d, (Arg("r"), Arg("c") = 0) )
     .define_method( "at_f", &mat_at_f, (Arg("r"), Arg("c") = 0) )
+    .define_method( "at_8u", &mat_at_8u, (Arg("r"), Arg("c") = 0) )
     .define_method( "set_d", &mat_set_d )
+    .define_method( "convert_to", &mat_convert_to, (Arg("type"), Arg("alpha") = 1.0, Arg("beta") = 0.0))
     .define_method( "to_a", &mat_to_a )
     .define_method( "svd", &mat_svd, 
         (Arg("w"), Arg("u"), Arg("vt"), Arg("flags") = 0 ) )
     .define_method( "inv", &mat_inv )
     .define_method( "pinv", &mat_pinv )
-    .define_method( "+", &mat_add )
-    .define_method( "-", &mat_subtract )
+    .define_method( "add_mat", &mat_add_mat )
+    .define_method( "add_const", &mat_add_const )
+    .define_method( "subtract_mat", &mat_subtract_mat )
+    .define_method( "subtract_const", &mat_subtract_const )
+    .define_method( "subtract_reverse_const", &mat_subtract_reverse_const )
     .define_method( "mult_mat", &mat_mult_mat )
     .define_method( "mult_const", &mat_mult_const )
     .define_method( "transpose", &mat_transpose )
