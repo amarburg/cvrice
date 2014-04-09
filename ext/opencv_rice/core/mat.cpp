@@ -79,9 +79,21 @@ void mat_svd( const Mat &m, Mat &w, Mat &u, Mat &vt, int flags = 0 )
 
 Mat mat_convert_to( const Mat &m, int rtype, double alpha, double beta )
 {
-Mat out;
-m.convertTo( out, rtype, alpha, beta );
-return out;
+  Mat out;
+  m.convertTo( out, rtype, alpha, beta );
+  return out;
+}
+
+Mat mat_merge( const Array mats )
+{
+  std::vector<Mat> matvec;
+  for( Array::const_iterator itr = mats.begin(); itr != mats.end(); ++itr ) {
+    matvec.push_back( from_ruby<Mat>(*itr) );
+  }
+
+  Mat out;
+  cv::merge( matvec, out );
+  return out;
 }
 
 Mat mat_transpose( const Mat &m ) { return m.t(); }
@@ -158,7 +170,8 @@ void init_mat( Module &rb_mCVRice )
     .define_method( "size", &mat_size )
     .define_singleton_method( "copy_constructor", &copy_constructor )
     .define_singleton_method( "eye", &mat_eye, (Arg("rows"), Arg("cols"), Arg("type") = CV_64F) )
-     .define_singleton_method( "from_ruby", &from_ruby<cv::Mat> );
+     .define_singleton_method( "from_ruby", &from_ruby<cv::Mat> )
+    .define_singleton_method( "merge", &mat_merge );
 
 //  rb_mCVRice.define_module_function( "cvmat_to_mat", &cvmat_to_mat );
 //  rb_mCVRice.define_module_function( "mat_to_cvmat", &mat_to_cvmat );
