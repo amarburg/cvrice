@@ -18,12 +18,12 @@ static VALUE matrix_load(  void )
 }
 
 // TODO.  Do this better.
-  template<>
-Mat from_ruby<Mat>( Object obj )
+// 
+Mat mat_from_ruby( Object obj )
 {
   if(obj.rb_type() == T_DATA)
   {
-    return *Data_Type<Mat>::from_ruby(obj);
+    return *Rice::Data_Type<Mat>::from_ruby(obj);
   } 
 
   if( !RTEST(rb_cMatrix ) ) rb_cMatrix = matrix_load();
@@ -90,8 +90,7 @@ Mat from_ruby<Mat>( Object obj )
 
 // TODO.  Can I template my specialization for the variety of Matx<>
 // ... and how would I "instantiate" it?
-template<> 
-cv::Matx33d from_ruby< cv::Matx33d >( Rice::Object obj )
+  Matx33d matx33d_from_ruby( Object obj )
 {
   if(obj.rb_type() == T_DATA)
   {
@@ -143,8 +142,7 @@ cv::Matx33d from_ruby< cv::Matx33d >( Rice::Object obj )
 
 
 
-template<> 
-cv::Matx33f from_ruby< cv::Matx33f >( Rice::Object obj )
+  Matx33f matx33f_from_ruby( Object obj )
 {
   if(obj.rb_type() == T_DATA)
   {

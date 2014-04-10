@@ -9,11 +9,12 @@ using namespace cv;
 
 #include "calib3d.h"
 #include "reproj.h"
+#include "../core/core.h"
+
 
 namespace CVRice {
 
-  //TODO.  I dislike this indirection.  Figure out how to live
-  // InputArray
+  //TODO.  I dislike this indirection.  Figure out how to live InputArray
   Mat findHomography( const Mat src, const Mat dst, 
       int method, double reprojThreshold )
   { return cv::findHomography( src, dst, method, reprojThreshold ); }
@@ -30,9 +31,10 @@ namespace CVRice {
     //typedef Mat (*find_hom)(InputArray, InputArray, int, double, OutputArray ); 
     //parent.define_singleton_method( "findHomography", find_hom(&cv::findHomography),
     //    (Arg("src"), Arg("dst"), Arg("method") = 0, Arg("threshold") = 3 ) );
-    
+
     parent.define_singleton_method( "findHomography", &CVRice::findHomography,
         (Arg("src"), Arg("dst"), Arg("method") = 0, Arg("threshold") = 3 ) );
   } 
 
 }
+

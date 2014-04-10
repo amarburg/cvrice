@@ -8,6 +8,8 @@ using namespace Rice;
 
 #include <stdio.h>
 
+#include "../core/mat_conversions.h"
+
 namespace CVRice {
 
   // n.b. I've changed the API.  It now assumes _m1 is an  N x 2 1-channel matrix, 

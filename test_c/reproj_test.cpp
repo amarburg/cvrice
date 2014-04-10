@@ -2,6 +2,7 @@
 #include "opencv2/core.hpp"
 using namespace cv;
 
+#include "opencv_rice/core/core.h"
 #include "opencv_rice/calib3d/reproj.h"
 using namespace CVRice;
 
