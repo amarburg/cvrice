@@ -18,7 +18,7 @@ module CVRice
       descriptors = Mat.new
 
       kps = describe_c( image, mask, descriptors )
-      [kps, descriptors]
+      [ kps, descriptors ]
     end
   end
 end

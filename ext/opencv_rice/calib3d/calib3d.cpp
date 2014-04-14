@@ -14,10 +14,11 @@ using namespace cv;
 
 namespace CVRice {
 
-  //TODO.  I dislike this indirection.  Figure out how to live InputArray
-  Mat findHomography( const Mat src, const Mat dst, 
-      int method, double reprojThreshold )
-  { return cv::findHomography( src, dst, method, reprojThreshold ); }
+  // TODO.  I dislike this indirection.  Figure out how to live with InputArray
+  Mat calculateHomography( const Mat src, const Mat dst, Mat &mask, int method, double reprojThreshold )
+  { 
+    return cv::findHomography( src, dst, method, reprojThreshold, mask );
+  }
 
   void init_calib3d( Module &parent )
   {
@@ -30,10 +31,11 @@ namespace CVRice {
 
     //typedef Mat (*find_hom)(InputArray, InputArray, int, double, OutputArray ); 
     //parent.define_singleton_method( "findHomography", find_hom(&cv::findHomography),
-    //    (Arg("src"), Arg("dst"), Arg("method") = 0, Arg("threshold") = 3 ) );
+    //    (Arg("src"), Arg("dst"), Arg("method") = 0, Arg("threshold") = 3, Arg("mask") = noArray() ) );
 
-    parent.define_singleton_method( "findHomography", &CVRice::findHomography,
-        (Arg("src"), Arg("dst"), Arg("method") = 0, Arg("threshold") = 3 ) );
+    // Can't figure out how to handle OutputArrays .. as default arguments.  Handle it in Ruby for now
+    parent.define_singleton_method( "calculateHomography", &CVRice::calculateHomography,
+        (Arg("src"), Arg("dst"), Arg("mask"), Arg("method") = 0, Arg("threshold") = 3) );
   } 
 
 }

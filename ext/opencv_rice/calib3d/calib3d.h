@@ -15,8 +15,8 @@ namespace CVRice {
 
   //TODO.  I dislike this indirection.  Figure out how to live with
   // InputArray
-  cv::Mat findHomography( const cv::Mat src, const cv::Mat dst, 
-      int method = ALL_POINTS, double reprojThreshold = 3 );
+  //
+  cv::Mat calculateHomography( const cv::Mat src, const cv::Mat dst, cv::Mat &mask, int method = ALL_POINTS, double reprojThreshold = 3 );
 
   void init_calib3d( Rice::Module & );
 }
