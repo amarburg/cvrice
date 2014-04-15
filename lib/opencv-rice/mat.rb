@@ -17,12 +17,12 @@ module CVRice
 
     # Emulate the overloaded constructor in Ruby
     class << self
-      alias :new_c :new
-
       def new( *args )
         case args.length
         when 0
-          Mat.new_c
+          a = allocate
+          a.send( :initialize )
+          a
         when 1
           arg = args.pop
           case arg
@@ -30,6 +30,8 @@ module CVRice
             Mat::from_ruby arg
           when Vector
             Mat::columns [ arg.to_a ]
+          when Matx22f, Matx22d, Matx33f, Matx33d
+            arg.to_mat
           when CVRice::Mat
             Mat::copy_constructor arg
           else 
@@ -37,7 +39,9 @@ module CVRice
           end
         when 2..3
           if Numeric === args[0] and Numeric === args[1]
-            Mat.new_c( *(args.first(3)) )
+            a=allocate
+            a.send( :initialize,  *(args.first(3)) )
+            a
           end
         else
           raise "Don't know how to make a Mat from: %s" % args.map {|x| x.inspect}.join(', ')
@@ -98,14 +102,14 @@ module CVRice
         when Numeric
           send( const_function, b )
         else
-          raise msg
+          raise msg % [b.class] 
         end
       }
     end
 
-    arithmatic_operator :+, :add_mat, :add_const, '"Don\'t know how to add a #{b.class} to a CVRice::Mat"'
-    arithmatic_operator :-, :subtract_mat, :subtract_const, '"Dont\'t know how to subtract a #{b.class} from a CVRice::Mat"'
-    arithmatic_operator :*, :mult_mat, :mult_const, '"Dont\'t know how to multiply a CVRice::Mat by a #{b.class}"'
+    arithmatic_operator :+, :add_mat, :add_const, '"Don\'t know how to add a %s to a CVRice::Mat"'
+    arithmatic_operator :-, :subtract_mat, :subtract_const, '"Dont\'t know how to subtract a %s from a CVRice::Mat"'
+    arithmatic_operator :*, :mult_mat, :mult_const, '"Dont\'t know how to multiply a CVRice::Mat by a %s"'
 
     def each
       if block_given?
@@ -162,6 +166,17 @@ module CVRice
       raise "This mat isn't 3x3, can't convert to matx33f" unless rows ==3 and cols == 3
       Matx33f::from_ruby to_a
     end
+
+    def to_matx22d
+      raise "This mat isn't 2x2, can't convert to matx22d" unless rows ==2 and cols == 2
+      Matx22d::from_ruby to_a
+    end
+
+    def to_matx22f
+      raise "This mat isn't 2x2, can't convert to matx22f" unless rows ==2 and cols == 2
+      Matx22f::from_ruby to_a
+    end
+
 
 
     def to_Matrix
