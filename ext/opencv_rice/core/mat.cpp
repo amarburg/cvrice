@@ -10,6 +10,8 @@ using namespace Rice;
 using namespace cv;
 
 #include <iostream>
+using std::endl;
+using std::cout;
 
 #include "mat_conversions.h"
 
@@ -121,16 +123,31 @@ Object mat_to_a( Mat &m )
 {
   Array arr;
 
-  int num_rows = m.rows, num_cols = m.cols, i = 0;
-  double *dbl = m.ptr<double>(0);
+  int num_rows = m.rows, num_cols = m.cols;
 
-  for( int r = 0; r < num_rows; ++r ) {
-    Array row;
-    for( int c = 0; c < num_cols; ++c, ++i ) {
-      row.push( dbl[i] );
-    }
-
-    arr.push( row );
+  switch(m.depth()) {
+    case CV_32F:
+      for( int r = 0; r < num_rows; ++r ) {
+        Array row;
+        float *flt = m.ptr<float>(r);
+        for( int c = 0; c < num_cols; ++c ) {
+          row.push( flt[c] );
+        }
+        arr.push( row );
+      }
+      break;
+    case CV_64F:
+      for( int r = 0; r < num_rows; ++r ) {
+        Array row;
+        double *dbl = m.ptr<double>(r);
+        for( int c = 0; c < num_cols; ++c ) {
+          row.push( dbl[c] );
+        }
+        arr.push( row );
+      }
+      break;
+    default:
+      rb_raise( rb_eTypeError, "Haven't handled this case in mat_to_a" );
   }
 
   return arr;

@@ -17,6 +17,8 @@ module CVRice
       alias_method :new_c, :new
       def new( *args )
         case args.first
+        when nil
+          new_c
         when Point2d, Point2f, Point2i, Point
           Point2f.new args.first.x, args.first.y
         when Numeric
@@ -58,6 +60,8 @@ module CVRice
       alias_method :new_c, :new
       def new( *args )
         case args.first
+        when nil
+          new_c
         when Point2d, Point2f, Point2i, Point
           Point2d.new args.first.x, args.first.y
         when Numeric
