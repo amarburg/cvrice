@@ -10,6 +10,14 @@ class TestMatx22d < Minitest::Test
     takes_a_matx22d Matrix.rows [ [1,3],[4,6] ]
   end
 
+  def test_identity
+    m = Matx22d.identity
+
+    assert_in_delta 1.0, m[0,0], 1e-3
+    assert_in_delta 0.0, m[0,1], 1e-3
+    assert_in_delta 0.0, m[1,0], 1e-3
+    assert_in_delta 1.0, m[1,1], 1e-3
+  end
 end
 
 class TestMatx22f < Minitest::Test

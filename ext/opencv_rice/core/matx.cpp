@@ -24,18 +24,30 @@ template <typename _Tp> _Tp matx_inv( const _Tp m ) { return m.inv(); }
 static Mat make_a_mat( Mat mat ) { return mat; }
 Object mat_to_a( Mat &m );
 
+// Doing this via typedef was getting awkward
+template <typename _MatT, typename _RetT> _RetT matx_get_element( const _MatT m, int i, int j )
+{ return m(i,j); } 
+
+
 //=========================================================
 
 
 template <typename _Tp> void define_matx( Module &rb_mCVRice, const char *name )
 {
+  //typedef _Tp::value_type (*element_accessor)(int i, int j);
+
   define_class_under< _Tp >( rb_mCVRice, name )
     .define_constructor( Constructor<_Tp>() )
     .define_method( "to_a", mat_to_a )
     .define_method( "to_mat", make_a_mat )
     .define_method( "inv", matx_inv< _Tp > )
     .define_method( "pinv", matx_inv< _Tp > )     // pseudo-inverse is inverse for square matrices
-     .define_singleton_method( "from_ruby", &from_ruby<_Tp> );
+    .define_method( "[]", matx_get_element< _Tp, typename _Tp::value_type > )
+    .define_singleton_method( "identity", _Tp::eye )
+    .define_singleton_method( "eye", _Tp::eye )
+    .define_singleton_method( "zeros", _Tp::zeros )
+    .define_singleton_method( "ones", _Tp::ones )
+    .define_singleton_method( "from_ruby", &from_ruby<_Tp> );
 
   define_implicit_cast< _Tp, Mat>();
 }
