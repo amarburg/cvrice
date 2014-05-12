@@ -22,7 +22,6 @@ template<>
 inline
 Rice::Object to_ruby< CVRice::DMatchVector >( CVRice::DMatchVector const &matches )
 {
-  std::cout << "In to_ruby" << std::endl;
   Rice::Array out;
   for( CVRice::DMatchVector::const_iterator itr = matches.begin(); itr != matches.end(); itr++ )
   {
@@ -36,7 +35,6 @@ template<>
 inline
 CVRice::DMatchVector from_ruby< CVRice::DMatchVector >( Rice::Object obj )
 {
-  std::cout << "In from_ruby" << std::endl;
   Rice::Array vec( obj );
   CVRice::DMatchVector out;
   for( Rice::Array::iterator itr = vec.begin(); itr != vec.end(); ++itr ) {
