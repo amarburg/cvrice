@@ -5,13 +5,15 @@ using namespace Rice;
 #include <opencv2/core.hpp>
 
 #include "to_from_ruby.h"
+#include "dmatch.h"
+
+using namespace CVRice;
 
 void init_mat( Module & );
 void init_matx( Module & );
 void init_vector( Module & );
 void init_keypoint( Module & );
 void init_point( Module & );
-void init_dmatch( Module & );
 void init_size( Module & );
 
 void init_core( Module &rb_mCVRice )
