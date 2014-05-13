@@ -116,7 +116,12 @@ Size mat_size( const Mat &m ) { return m.size(); }
 // MatExpr into the library?
 Mat mat_eye( int rows, int cols, int type )
 {
-  return Mat::eye( rows, cols, type );
+  return Mat::eye( rows, cols, type ); 
+}
+
+Mat mat_zeros( int rows, int cols, int type )
+{ 
+  return Mat::zeros( rows, cols, type ); 
 }
 
 Object mat_to_a( Mat &m )
@@ -187,7 +192,8 @@ void init_mat( Module &rb_mCVRice )
     .define_method( "size", &mat_size )
     .define_singleton_method( "copy_constructor", &copy_constructor )
     .define_singleton_method( "eye", &mat_eye, (Arg("rows"), Arg("cols"), Arg("type") = CV_64F) )
-     .define_singleton_method( "from_ruby", &from_ruby<cv::Mat> )
+    .define_singleton_method( "zeros", &mat_zeros, (Arg("rows"), Arg("cols"), Arg("type") = CV_64F) )
+    .define_singleton_method( "from_ruby", &from_ruby<cv::Mat> )
     .define_singleton_method( "merge", &mat_merge );
 
 //  rb_mCVRice.define_module_function( "cvmat_to_mat", &cvmat_to_mat );

@@ -39,9 +39,7 @@ module CVRice
           end
         when 2..3
           if Numeric === args[0] and Numeric === args[1]
-            a=allocate
-            a.send( :initialize,  *(args.first(3)) )
-            a
+            Mat::zeros( *(args.first(3)) )
           end
         else
           raise "Don't know how to make a Mat from: %s" % args.map {|x| x.inspect}.join(', ')
