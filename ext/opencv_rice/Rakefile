@@ -21,7 +21,7 @@ INCLUDES = "-I/home/aaron/.rvm/rubies/ruby-2.1.0/include/ruby-2.1.0 -I/home/aaro
 
 LIBS = "-lpthread -ldl -lcrypt -lm"
 
-CFLAGS = "-Wall -ggdb -O3 -fPIC -I/home/aaron/.rvm/gems/ruby-2.1.0/gems/rice-1.6.0/ruby/lib/include "
+CFLAGS = "-Wall -ggdb -O34 -fPIC -I/home/aaron/.rvm/gems/ruby-2.1.0/gems/rice-1.6.0/ruby/lib/include "
 
 RUBYARCHDIR = "#{ENV["RUBYARCHDIR"]}"
 LIBRUBYARG_SHARED = "-Wl,-R -Wl,/home/aaron/.rvm/rubies/ruby-2.1.0/lib -L/home/aaron/.rvm/rubies/ruby-2.1.0/lib -lruby"

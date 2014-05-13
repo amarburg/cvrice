@@ -22,15 +22,15 @@ Mkrf::Generator.new( 'libopencv_rice', sources, compiler: "g++" ) do |gen|
   # The standard automatic library detection mechanism isn't well suited to
   # shared libraries of C++ code, so specify libraries manually for now
   #
-  gen.cflags = [ '-Wall', '-ggdb', '-O3', '-fPIC',
-                  "-I#{dirs.rice}/include" ].join(' ')
+  gen.cflags = %W( -Wall -ggdb -O34 -fPIC
+                  -I#{dirs[:rice].join('include')} ).join(' ')
 
   # n.b.  Libraries should be specified after the object files.  
   # This 'objects' syntax causes mkrf to place this text after 
   # the list of objects on the linker command line
   # (though before the other libs)
   #
-  gen.objects << %W( -L#{dirs.rice}/lib -lrice -lstdc++
+  gen.objects << %W( -L#{dirs[:rice].join('lib')} -lrice -lstdc++
                  -lopencv_core -lopencv_features2d 
                  -lopencv_calib3d
                  -lopencv_highgui -lopencv_nonfree).join(' ')

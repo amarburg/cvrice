@@ -15,14 +15,15 @@ namespace :test_c do
   cflags   = dirs.ruby_cflags + 
              %W( -ggdb
                  -I#{dirs.topdir.join('ext')}
-                 -I#{dirs.rice.join('include')}
-                 -I#{dirs.gtest}/include )
+                 -I#{dirs[:rice].join('include')}
+                 -I#{dirs[:gtest]}/include )
   ldflags  = cflags
   libs  = dirs.ruby_ldflags + 
-          %W( -L#{dirs.gtest}/build -lgtest
+          %W( -L#{dirs[:gtest]}/build -lgtest
               -lopencv_core -lopencv_calib3d
               -lpthread
-              -L#{dirs.topdir.join('lib')} -lopencv_rice )
+              -Llib -lopencv_rice
+              -Wl,-rpath=lib )
 
   file test_app => [:ext] + objs do
     sh [ cpp,  *ldflags, 
