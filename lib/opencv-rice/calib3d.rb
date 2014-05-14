@@ -34,12 +34,13 @@ module CVRice
 
       thint = Mat.new( opts[:thint] )
 
-    calculatePnPHint( obj, image, cameraMatrix, distortion, rhint, thint, method  )
+      calculatePnPHint( obj, image, cameraMatrix, distortion, rhint, thint, method  )
     elsif opts[:rhint] or opts[:thint]
       raise "Both :rhint and :thint must be provided..."
     else
-    calculatePnP( obj, image, cameraMatrix, distortion, method  )
+      calculatePnP( obj, image, cameraMatrix, distortion, method  )
     end
   end
   module_function :solvePnP
+
 end

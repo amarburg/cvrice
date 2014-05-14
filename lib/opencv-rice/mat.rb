@@ -28,7 +28,7 @@ module CVRice
           case arg
           when Array, Matrix
             Mat::from_ruby arg
-          when Vector
+          when Vector, Vec3d
             Mat::columns [ arg.to_a ]
           when Matx22f, Matx22d, Matx33f, Matx33d
             arg.to_mat
@@ -42,7 +42,7 @@ module CVRice
             Mat::zeros( *(args.first(3)) )
           end
         else
-          raise "Don't know how to make a Mat from: %s" % args.map {|x| x.inspect}.join(', ')
+          raise "Don't know how to make a Mat from: %s" % (args.map {|x| x.inspect}.join(', '))
         end
       end
 
