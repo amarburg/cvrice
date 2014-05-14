@@ -1,6 +1,7 @@
 
 #include <rice/Module.hpp>
 #include <rice/Enum.hpp>
+#include <rice/Constructor.hpp>
 using namespace Rice;
 
 #include <opencv2/core.hpp>
@@ -20,6 +21,33 @@ namespace CVRice {
     return cv::findHomography( src, dst, method, reprojThreshold, mask );
   }
 
+  Pose calculatePnP( const Mat objpts, const Mat imgpts, const Mat cameramat, const Mat distcoeffs, int flags )
+  {
+    Mat rvec, tvec;
+
+    bool result = solvePnP( objpts, imgpts, cameramat, distcoeffs, rvec, tvec, false, flags );
+
+    return Pose( rvec, tvec );
+  }
+
+
+  Pose calculatePnPHint( const Mat objpts, const Mat imgpts, const Mat cameramat, const Mat distcoeffs, 
+      const Mat rvec_hint, const Mat tvec_hint, int flags )
+  {
+    Mat rvec = rvec_hint, tvec = tvec_hint;
+
+    bool result = solvePnP( objpts, imgpts, cameramat, distcoeffs, rvec, tvec, true, flags );
+
+    return Pose( rvec, tvec );
+  }
+
+  Mat rodrigues( const Mat in )
+  {
+    Mat out;
+    Rodrigues( in, out );
+    return out;
+  }
+
   void init_calib3d( Module &parent )
   {
     init_reproj( parent );
@@ -33,9 +61,24 @@ namespace CVRice {
     //parent.define_singleton_method( "findHomography", find_hom(&cv::findHomography),
     //    (Arg("src"), Arg("dst"), Arg("method") = 0, Arg("threshold") = 3, Arg("mask") = noArray() ) );
 
+    define_class_under< Pose >( parent, "Pose" )
+      .define_constructor( Constructor< Mat, Mat >() )
+      .define_method( "rotation_matrix", &Pose::rotation_matrix )
+      .define_method( "t", &Pose::t )
+      .define_method( "rvec", &Pose::rvec )
+      .define_method( "total", &Pose::total )
+      .define_method( "inv", &Pose::invert )
+      .define_method( "invert", &Pose::invert );
+
     // Can't figure out how to handle OutputArrays .. as default arguments.  Handle it in Ruby for now
     parent.define_singleton_method( "calculateHomography", &CVRice::calculateHomography,
-        (Arg("src"), Arg("dst"), Arg("mask"), Arg("method") = 0, Arg("threshold") = 3) );
+        (Arg("src"), Arg("dst"), Arg("mask"), Arg("method") = 0, Arg("threshold") = 3) )
+      .define_singleton_method( "calculatePnP", &CVRice::calculatePnP,
+          (Arg("objPts"), Arg("imgPts"), Arg("cameraMat"), Arg("distCoeffs"), Arg("flags") = (int)cv::ITERATIVE) )
+      .define_singleton_method( "calculatePnPHint", &CVRice::calculatePnPHint,
+          (Arg("objPts"), Arg("imgPts"), Arg("cameraMat"), Arg("distCoeffs"), 
+           Arg("rvec_hint"), Arg("tvec_hint"), Arg("flags") = (int)cv::ITERATIVE) )
+      .define_singleton_method( "rodrigues", &rodrigues );
   } 
 
 }
