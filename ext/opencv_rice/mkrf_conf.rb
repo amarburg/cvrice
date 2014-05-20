@@ -22,7 +22,7 @@ Mkrf::Generator.new( 'libopencv_rice', sources, compiler: "g++" ) do |gen|
   # The standard automatic library detection mechanism isn't well suited to
   # shared libraries of C++ code, so specify libraries manually for now
   #
-  gen.cflags = %W( -Wall -ggdb -O34 -fPIC
+  gen.cflags = %W( -Wall -ggdb -O0 -fPIC
                   -I#{dirs[:rice].join('include')} ).join(' ')
 
   # n.b.  Libraries should be specified after the object files.  

@@ -15,6 +15,39 @@ using namespace cv;
 
 namespace CVRice {
 
+  Pose::Pose( const Mat rvec, const Mat tvec )
+    : _rvec(), _tvec() 
+  {
+    cv::Mat rin( rvec ), tin( tvec );
+
+    if( (rin.cols * rin.rows) == 9 ) Rodrigues( rvec, rin );
+
+    CV_Assert( (rin.cols == 1) && (rin.rows == 3));
+    CV_Assert( (tin.cols == 1) && (tin.rows == 3)); 
+
+    rin.convertTo( _rvec, CV_32F );
+    tin.convertTo( _tvec, CV_32F );
+  }
+
+  Mat Pose::Pose::total( void ) {
+    Mat rot = rotation_matrix();
+    Mat total = Mat::eye(4,4, CV_32F );
+
+    for( int r = 0; r < 3; ++r ) {
+      for( int c = 0; c < 3; ++c )  {
+        total.at<float>(r,c) = rot.at<float>(r,c);
+        total.at<float>(3,c) = 0.0;
+      }
+
+      total.at<float>(r,3) = t().at<float>(r,0);
+    }
+
+    return total;
+  }
+
+
+
+
   // TODO.  I dislike this indirection.  Figure out how to live with InputArray
   Mat calculateHomography( const Mat src, const Mat dst, Mat &mask, int method, double reprojThreshold )
   { 
@@ -62,9 +95,10 @@ namespace CVRice {
     //    (Arg("src"), Arg("dst"), Arg("method") = 0, Arg("threshold") = 3, Arg("mask") = noArray() ) );
 
     define_class_under< Pose >( parent, "Pose" )
-      .define_constructor( Constructor< Mat, Mat >() )
+      .define_constructor( Constructor< Pose, const Mat, const Mat >() )
       .define_method( "rotation_matrix", &Pose::rotation_matrix )
       .define_method( "t", &Pose::t )
+      .define_method( "tvec", &Pose::t )
       .define_method( "rvec", &Pose::rvec )
       .define_method( "total", &Pose::total )
       .define_method( "inv", &Pose::invert )

@@ -34,3 +34,41 @@ class TestCalib3d < Minitest::Test
       assert_equal 3, h.cols
     end
 end
+
+
+
+class TestPose < Minitest::Test
+  include CVRice
+
+  def pose_tests( pose )
+    assert_instance_of CVRice::Pose, pose
+
+    [ pose.rvec, pose.tvec ].each { |vec|
+      assert_instance_of Mat, vec
+      assert_equal 3, vec.rows
+      assert_equal 1, vec.cols
+    }
+
+    rot = pose.rotation_matrix
+    assert_instance_of Mat, rot
+    assert_equal 3, rot.rows
+    assert_equal 3, rot.cols
+
+    total = pose.total
+    assert_instance_of Mat, total
+    assert_equal 4, total.rows
+    assert_equal 4, total.cols
+  end
+
+  def test_initialise_rotation_matrix
+    pose = Pose.new( Mat.identity(3), Mat.columns([ [0,0,0] ] ) )
+    pose_tests( pose )
+  end
+
+  def test_initialise_rvec
+    pose = Pose.new( Mat.columns([ [0,0,0] ]), Mat.columns([ [0,0,0] ] ) )
+    pose_tests( pose )
+  end
+end
+
+
