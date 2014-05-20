@@ -95,6 +95,15 @@ module CVRice
         case b
         when Vector,Matrix,Mat
           send( mat_function, b )
+        when Array
+          case b.first
+          when Array
+            send( mat_function, Mat.rows(b) )
+          when Numeric
+            send( mat_function, Mat.columns([b]) )
+          else
+            raise msg % [b.class] 
+          end
         when Vec3d
           send( mat_function, b.to_mat )
         when Numeric

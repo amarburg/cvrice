@@ -4,6 +4,7 @@ require 'libopencv_rice'
 
 require 'opencv-rice/core'
 require 'opencv-rice/mat'
+require 'opencv-rice/size' 
 require 'opencv-rice/vector'
 require 'opencv-rice/point'
 

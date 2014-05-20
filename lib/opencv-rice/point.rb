@@ -85,11 +85,19 @@ module CVRice
     end
 
     def homogeneous
-      Vec3d.new x,y,1
+      Vec3d.new( x,y,1 )
     end
 
     def to_Vector( homogeneous = true )
-      Vector[ x, y, 1.0 ]
+      Vector.elements( to_a(homogeneous) )
+    end
+
+    def to_a( homogeneous = true )
+      if homogeneous
+        [ x, y, 1.0 ]
+      else
+        [ x, y ]
+      end
     end
   end
 
