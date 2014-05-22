@@ -32,7 +32,19 @@ namespace CVRice {
         return rot;
       }
 
-      cv::Mat total( void );
+      template <typename _Tp>
+        cv::Mat total( void ) {
+          cv::Mat rot = rotation_matrix();
+          cv::Matx< _Tp, 4, 4 > total( rot.at< float >(0,0), rot.at<float>(0,1), rot.at<float>(0,2), _tvec.at<float>(0,0),
+               rot.at< float >(1,0), rot.at<float>(1,1), rot.at<float>(1,2), _tvec.at<float>(1,0),
+               rot.at< float >(2,0), rot.at<float>(2,1), rot.at<float>(2,2), _tvec.at<float>(2,0),
+               0.0, 0.0, 0.0, 1.0 );
+
+          return Mat(total);
+        }
+
+      cv::Mat total_d( void ) { return total<double>(); }
+
 
       Pose invert( void ) {
         // TODO.  Could be done without conversion to rotation matrix and

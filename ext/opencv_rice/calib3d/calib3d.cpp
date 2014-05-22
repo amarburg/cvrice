@@ -29,22 +29,6 @@ namespace CVRice {
     tin.convertTo( _tvec, CV_32F );
   }
 
-  Mat Pose::Pose::total( void ) {
-    Mat rot = rotation_matrix();
-    Mat total = Mat::eye(4,4, CV_32F );
-
-    for( int r = 0; r < 3; ++r ) {
-      for( int c = 0; c < 3; ++c )  {
-        total.at<float>(r,c) = rot.at<float>(r,c);
-        total.at<float>(3,c) = 0.0;
-      }
-
-      total.at<float>(r,3) = t().at<float>(r,0);
-    }
-
-    return total;
-  }
-
 
 
 
@@ -100,7 +84,8 @@ namespace CVRice {
       .define_method( "t", &Pose::t )
       .define_method( "tvec", &Pose::t )
       .define_method( "rvec", &Pose::rvec )
-      .define_method( "total", &Pose::total )
+      .define_method( "total", &Pose::total_d )
+      .define_method( "total_d", &Pose::total_d )
       .define_method( "inv", &Pose::invert )
       .define_method( "invert", &Pose::invert );
 
