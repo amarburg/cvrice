@@ -28,6 +28,7 @@ double mat_at_d( Mat const &m, int r, int c = 0) {
       rb_raise( rb_eTypeError, "Haven't handled this case in mat_at_d" );
   }
 }
+
 float mat_at_f( Mat const &m, int r, int c = 0) {
   switch(m.depth()) {
     case CV_8U:
@@ -50,13 +51,13 @@ unsigned char mat_at_8u( Mat const &m, int r, int c = 0 ) {
   }
 }
 
-void mat_set_d( Mat &m, int r, int c, double val ) {
+double mat_set_d( Mat &m, int r, int c, double val ) {
   switch(m.depth()) {
     case CV_32F:
-      m.at<float>(r,c) = val;
+      return m.at<float>(r,c) = val;
       break;
     case CV_64F:
-      m.at<double>(r,c) = val;
+      return m.at<double>(r,c) = val;
       break;
     default:
       rb_raise( rb_eTypeError, "Haven't handled this case in mat_set_d (%d)", m.depth() );

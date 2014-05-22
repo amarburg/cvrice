@@ -199,6 +199,10 @@ module CVRice
       at_d(r,c)
     end
 
+    def []=(r,c,v)
+      set_d( r,c, v)
+    end
+
     def to_CvMat
       CVRice::mat_to_cvmat( self )
     end
