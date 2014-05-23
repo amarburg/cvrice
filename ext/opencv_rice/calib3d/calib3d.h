@@ -40,15 +40,14 @@ namespace CVRice {
                rot.at< float >(2,0), rot.at<float>(2,1), rot.at<float>(2,2), _tvec.at<float>(2,0),
                0.0, 0.0, 0.0, 1.0 );
 
-          return Mat(total);
+          return cv::Mat(total);
         }
 
       cv::Mat total_d( void ) { return total<double>(); }
 
 
       Pose invert( void ) {
-        // TODO.  Could be done without conversion to rotation matrix and
-        // back again?
+        // TODO.  Could be done without conversion to rotation matrix and back again?
         cv::Mat rinv;
         cv::Rodrigues( rotation_matrix().inv(), rinv );
         return Pose( rinv, rotation_matrix() * _tvec * -1 );
