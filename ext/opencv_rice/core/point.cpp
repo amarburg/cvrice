@@ -50,6 +50,9 @@ void init_point( Module &rb_mCVRice ) {
     .define_constructor( Constructor<Point2i, int, int>(), (Arg("x") = 0, Arg("y") = 0) )
     .define_method( "x", &get_x<Point2i,int> )
     .define_method( "y", &get_y<Point2i,int> );
+
+  define_implicit_cast<Point2f,Point2d>();
+  define_implicit_cast<Point2d,Point2f>();
 }
 
 

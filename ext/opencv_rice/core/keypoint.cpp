@@ -14,15 +14,20 @@ using std::vector;
 
 // Still haven't sussed how Rice handles accessors for class members
 // So I'm writing manual accessors for now
-float get_keypoint_x( const KeyPoint &kp ) { return kp.pt.x; };
-float get_keypoint_y( const KeyPoint &kp ) { return kp.pt.y; };
-Point2f get_keypoint_pt( const KeyPoint &kp ) { return kp.pt; };
-void set_keypoint_pt( KeyPoint &kp, const Point2f &pt ) { kp.pt = pt; };
-float get_keypoint_size( const KeyPoint &kp ) { return kp.size; };
-float get_keypoint_angle( const KeyPoint &kp ) { return kp.angle; };
-float get_keypoint_response( const KeyPoint &kp ) { return kp.response; };
-int   get_keypoint_octave( const KeyPoint &kp ) { return kp.octave; };
-int   get_keypoint_class_id( const KeyPoint &kp ) { return kp.class_id; };
+float get_keypoint_x( const KeyPoint &kp ) { return kp.pt.x; }
+float get_keypoint_y( const KeyPoint &kp ) { return kp.pt.y; }
+Point2f get_keypoint_pt( const KeyPoint &kp ) { return kp.pt; }
+
+Point2f set_keypoint_pt( KeyPoint &kp, const Point2f &pt ) { return kp.pt = pt; }
+double set_keypoint_x( KeyPoint &kp, const double x ) { return kp.pt.x = x; }
+double set_keypoint_y( KeyPoint &kp, const double y ) { return kp.pt.y = y; }
+
+float get_keypoint_size( const KeyPoint &kp ) { return kp.size; }
+float get_keypoint_angle( const KeyPoint &kp ) { return kp.angle; }
+float get_keypoint_response( const KeyPoint &kp ) { return kp.response; }
+int   get_keypoint_octave( const KeyPoint &kp ) { return kp.octave; }
+int   get_keypoint_class_id( const KeyPoint &kp ) { return kp.class_id; }
+KeyPoint duplicate_keypoint( const KeyPoint &kp ) { return KeyPoint( kp ); }
 
 void takes_a_keypoint_vector( const KeyPointVector &vec ) {;}
 
@@ -34,6 +39,8 @@ void init_keypoint( Module &rb_mCVRice ) {
           Arg("octave") = 0, Arg("class_id") = -1 ) )
     .define_method( "x", &get_keypoint_x )
     .define_method( "y", &get_keypoint_y )
+    .define_method( "x=", &set_keypoint_x )
+    .define_method( "y=", &set_keypoint_y )
     .define_method( "pt", &get_keypoint_pt )
     .define_method( "pt=", &set_keypoint_pt )
     .define_method( "size", &get_keypoint_size )

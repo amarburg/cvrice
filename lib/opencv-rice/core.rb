@@ -5,6 +5,11 @@ module CVRice
 
 
   class Keypoint 
+
+    def dup
+      Keypoint.new( *to_a )
+    end
+
     def to_a
       [ x, y, size, angle, response, octave ]
     end
