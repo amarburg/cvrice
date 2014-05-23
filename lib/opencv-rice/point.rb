@@ -7,63 +7,39 @@ module CVRice
     end
   end
 
-  class Point2f
+  module PointCommon
 
-    class <<self
-
-      # TODO:  How to "templatize" this so I can replicate it for Point2f
-      # with DRY
-      #
-      alias_method :new_c, :new
-      def new( *args )
-        case args.first
-        when nil
-          new_c
-        when Point2d, Point2f, Point2i, Point
-          Point2f.new args.first.x, args.first.y
-        when Numeric
-          case args.length
-          when 2
-            new_c args[0], args[1]
-          when 3
-            new_c args[0].to_f/args[2], args[1].to_f/args[2]
-          else
-            raise "Can't make a Point2f from #{args.length} values"
-          end
-        when Array
-          Point2f.new( *(args.first) )
-        when Matrix, Vector, Mat
-          Point2f.new args.first.to_a.flatten(1)
-        else
-          raise "Don't know how to make a Point2f from a #{args.first.class}: #{ args.map { |x| x.inspect }.join(',')}"
-        end
-      end
-
+    def self.included( klass )
+      klass.extend ClassMethods
     end
 
     def homogeneous
-      Vec3d.new x,y,1
+      vector_class.new x,y,1
     end
 
     def to_Vector( homogeneous = true )
       Vector[ x, y, 1.0 ]
     end
-  end
 
-  class Point2d
+    def to_a( homogeneous = true )
+      if homogeneous
+        [ x, y, 1.0 ]
+      else
+        [ x, y ]
+      end
+    end
 
-    class <<self
+    module ClassMethods
 
-      # TODO:  How to "templatize" this so I can replicate it for Point2f
-      # with DRY
-      #
-      alias_method :new_c, :new
       def new( *args )
         case args.first
         when nil
           new_c
         when Point2d, Point2f, Point2i, Point
-          Point2d.new args.first.x, args.first.y
+          point_class.new args.first.x, args.first.y
+        when Vec2d, Vec3d
+          vec = args.first
+          point_class.new *vec
         when Numeric
           case args.length
           when 2
@@ -74,31 +50,44 @@ module CVRice
             raise "Can't make a Point2d from #{args.length} values"
           end
         when Array
-          Point2d.new( *(args.first) )
+          point_class.new( *(args.first) )
         when Matrix, Vector, Mat
-          Point2d.new args.first.to_a.flatten(1)
+          point_class.new args.first.to_a.flatten(1)
         else
           raise "Don't know how to make a Point2d from a #{args.first.class}: #{ args.map { |x| x.inspect }.join(',')}"
         end
       end
-
     end
 
-    def homogeneous
-      Vec3d.new( x,y,1 )
+  end
+
+
+  class Point2f
+
+    class <<self
+      alias_method :new_c, :new
+
+      # TODO.  This is somewhat ugly.  Can I get this through metaprogamming?
+      def point_class; Point2f; end
     end
 
-    def to_Vector( homogeneous = true )
-      Vector.elements( to_a(homogeneous) )
+    include PointCommon
+
+    # TODO.  Vec3f doesn't exist yet...
+    def vector_class; Vec3d; end
+  end
+
+  class Point2d
+
+    class <<self
+      alias_method :new_c, :new
+      # TODO.  This is somewhat ugly.  Can I get this through metaprogamming?
+      def point_class; Point2d; end
     end
 
-    def to_a( homogeneous = true )
-      if homogeneous
-        [ x, y, 1.0 ]
-      else
-        [ x, y ]
-      end
-    end
+    include PointCommon
+
+    def vector_class; Vec3d; end
   end
 
 end
