@@ -194,8 +194,6 @@ class TestMat < Minitest::Test
     2.times.each { |r| 2.times.each { |c| assert_in_delta (r+c), d[r,c],1e-2 }}
   end
 
-
-
   def test_eye
     m = Mat.identity( 3 )
     assert_equal 3, m.rows
@@ -212,6 +210,24 @@ class TestMat < Minitest::Test
       }
     }
   end
+
+  def test_row
+    m = Mat.rows arr
+
+    2.times { |r|
+      row = m.row(r)
+
+      assert_instance_of Mat, row
+      assert_equal 1, row.rows
+      assert_equal arr.first.length, row.cols
+
+      row.cols.times { |c|
+        assert_in_delta arr[r][c], row[0,c], 1e-6
+      }
+    }
+  end
+
+
 
 
   def test_didnt_break_float
