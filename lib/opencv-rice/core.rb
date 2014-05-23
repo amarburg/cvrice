@@ -3,8 +3,7 @@
 
 module CVRice
 
-
-  class Keypoint 
+  class KeyPoint 
 
     def dup
       Keypoint.new( *to_a )
@@ -17,6 +16,9 @@ module CVRice
     def self.from_a( arr )
       Keypoint.new( *arr )
     end
+  end
+
+  class Keypoint < KeyPoint
   end
 
 end

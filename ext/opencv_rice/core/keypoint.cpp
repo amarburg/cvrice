@@ -33,7 +33,7 @@ void takes_a_keypoint_vector( const KeyPointVector &vec ) {;}
 
 void init_keypoint( Module &rb_mCVRice ) {
 
-  define_class_under<KeyPoint>( rb_mCVRice, "Keypoint" )
+  define_class_under<KeyPoint>( rb_mCVRice, "KeyPoint" )
     .define_constructor( Constructor<KeyPoint, float, float, float, float, float, int, int>(),
         ( Arg("x") = 0, Arg("y") = 0, Arg("size") = 0, Arg( "angle" ) = -1, Arg("response") = 0,
           Arg("octave") = 0, Arg("class_id") = -1 ) )

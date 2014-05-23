@@ -3,11 +3,11 @@ require "opencv-rice"
 
 require "minitest/autorun"
 
-class TestKeypoint < Minitest::Test
+class TestKeyPoint < Minitest::Test
   include CVRice
 
   def test_default_constructor
-    kp = Keypoint.new
+    kp = KeyPoint.new
 
     assert_equal 0, kp.x
     assert_equal 0, kp.y
@@ -21,7 +21,7 @@ class TestKeypoint < Minitest::Test
     @response = 2.3e4
     @octave = 2
 
-    @kp = Keypoint.new( @x, @y, @size, @angle, @response, @octave )
+    @kp = KeyPoint.new( @x, @y, @size, @angle, @response, @octave )
   end
 
   def epsilon; 1e-2; end
