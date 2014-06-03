@@ -113,6 +113,9 @@ Mat mat_pinv( const Mat &m ) { return m.inv( DECOMP_SVD ); }
 Mat mat_inv(  const Mat &m ) { return m.inv(); }
 Size mat_size( const Mat &m ) { return m.size(); }
 
+double mat_l2_norm( const Mat &m ) { return norm( m, NORM_L2 ); }
+
+
 // TODO:  Done this way because Mat::eye returns a MatExpr ... can I integrate
 // MatExpr into the library?
 Mat mat_eye( int rows, int cols, int type )
@@ -182,6 +185,8 @@ void init_mat( Module &rb_mCVRice )
         (Arg("w"), Arg("u"), Arg("vt"), Arg("flags") = 0 ) )
     .define_method( "inv", &mat_inv )
     .define_method( "pinv", &mat_pinv )
+    .define_method( "l2_norm", &mat_l2_norm )
+    .define_method( "norm", &mat_l2_norm )
     .define_method( "add_mat", &mat_add_mat )
     .define_method( "add_const", &mat_add_const )
     .define_method( "subtract_mat", &mat_subtract_mat )
