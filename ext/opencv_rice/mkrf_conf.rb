@@ -7,6 +7,7 @@ puts `gem env`
 p $LOAD_PATH
 
 require 'bundler'
+p Bundler.bundle_path
 Bundler.setup(:default)
 
 puts `gem env`
