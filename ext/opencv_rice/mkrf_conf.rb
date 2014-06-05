@@ -1,5 +1,5 @@
 
-p $LOAD_PATH
+puts `gem env`
 require 'mkrf'
 require_relative '../../tasks/directories'
 
