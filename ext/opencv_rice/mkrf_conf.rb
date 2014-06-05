@@ -1,6 +1,9 @@
 
+## Additional steps because I'm using my mkrf from github,
+#  not the Rubygems version
 require 'rubygems'
-require 'bundler/setup'
+require 'bundler'
+Bundler.setup(:default)
 
 puts `gem env`
 p $LOAD_PATH
