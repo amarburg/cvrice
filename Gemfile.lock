@@ -1,0 +1,30 @@
+GIT
+  remote: https://github.com/amarburg/mkrf.git
+  revision: 833851f3c93c39f0127ee5b1027f08a8c55a8549
+  specs:
+    mkrf (0.2.3)
+      rake
+
+PATH
+  remote: .
+  specs:
+    opencv-rice (0.0.1)
+      mkrf
+      rice
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+    minitest (5.3.4)
+    rake (10.3.2)
+    rice (1.6.2)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  bundler (~> 1.5)
+  minitest
+  mkrf!
+  opencv-rice!
+  rake
