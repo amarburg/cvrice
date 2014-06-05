@@ -1,5 +1,8 @@
 
+require 'bundler/setup'
+
 puts `gem env`
+p $LOAD_PATH
 require 'mkrf'
 require_relative '../../tasks/directories'
 
