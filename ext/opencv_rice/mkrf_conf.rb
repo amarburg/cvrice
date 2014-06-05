@@ -1,7 +1,7 @@
 
 ## Additional steps because I'm using my mkrf from github,
 #  not the Rubygems version
-ENV['DEBUG'] = true
+ENV['DEBUG'] = '1'
 require 'rubygems'
 puts `gem env`
 p $LOAD_PATH
