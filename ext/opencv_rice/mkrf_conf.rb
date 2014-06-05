@@ -1,5 +1,5 @@
 
-require 'bundler/setup'
+require 'rubygems/dependency_installer.rb'
 require 'mkrf'
 require_relative '../../tasks/directories'
 
