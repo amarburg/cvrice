@@ -1,4 +1,5 @@
 
+require 'bundler/setup'
 require 'mkrf'
 require_relative '../../tasks/directories'
 
