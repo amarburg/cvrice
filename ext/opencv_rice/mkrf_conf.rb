@@ -3,7 +3,7 @@
 #  not the Rubygems version
 require 'rubygems'
 require 'bundler'
-Bundler.require(:default)
+Bundler.setup(:default)
 
 puts `gem env`
 p $LOAD_PATH
