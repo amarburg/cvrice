@@ -1,5 +1,5 @@
 
-require 'rubygems/dependency_installer.rb'
+p $LOAD_PATH
 require 'mkrf'
 require_relative '../../tasks/directories'
 
