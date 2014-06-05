@@ -8,6 +8,9 @@ p $LOAD_PATH
 
 require 'bundler'
 p Bundler.bundle_path
+
+##  This is wrong...
+Bundler::Installer.install( Bundler.root, Bundler.definition )
 Bundler.setup(:default)
 
 puts `gem env`
