@@ -1,0 +1,15 @@
+
+# Something in the bundler/gem install process is sanitizing
+# the Gem path and I can't find mkrf...
+ENV['GEM_PATH'] = ENV['_ORIGINAL_GEM_PATH']
+
+%w( opencv_rice ).each { |dir|
+
+  task dir do
+    #sh "cd #{dir}"
+    #ruby "mkrf_conf.rb"
+    sh "cd #{dir} && bundle install && bundle exec ruby mkrf_conf.rb && rake"
+  end
+
+  task :default => dir
+}

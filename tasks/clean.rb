@@ -1,7 +1,7 @@
 
 require "rake/clean"
 
-CLEAN.include FileList.new( "ext/**/Rakefile" )
+CLEAN.include FileList.new( "ext/*/Rakefile" )
 CLEAN.include FileList.new( "ext/**/*.so" )
 CLEAN.include FileList.new( "ext/**/*.o" )
 
