@@ -1,20 +1,20 @@
 
 ## Additional steps because I'm using my mkrf from github,
 #  not the Rubygems version
-ENV['DEBUG'] = '1'
-require 'rubygems'
-puts `gem env`
-p $LOAD_PATH
-
-require 'bundler'
-p Bundler.bundle_path
-
-##  This is wrong...
-Bundler::Installer.install( Bundler.root, Bundler.definition )
-Bundler.setup(:default)
-
-puts `gem env`
-p $LOAD_PATH
+#ENV['DEBUG'] = '1'
+#require 'rubygems'
+#puts `gem env`
+#p $LOAD_PATH
+#
+#require 'bundler'
+#p Bundler.bundle_path
+#
+###  This is wrong...
+#Bundler::Installer.install( Bundler.root, Bundler.definition )
+#Bundler.setup(:default)
+#
+#puts `gem env`
+#p $LOAD_PATH
 require 'mkrf'
 require_relative '../../tasks/directories'
 
