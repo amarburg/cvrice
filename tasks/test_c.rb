@@ -12,14 +12,14 @@ namespace :test_c do
   objs     = srcs.map { |f| Pathname.new(f).sub_ext('.o').to_s }
 
   cpp      = 'g++'
-  cflags   = dirs.ruby_cflags + 
+  cflags   = dev_dirs.ruby_cflags + 
              %W( -ggdb
-                 -I#{dirs.topdir.join('ext')}
-                 -I#{dirs[:rice].join('include')}
-                 -I#{dirs[:gtest]}/include )
+                 -I#{dev_dirs.topdir.join('ext')}
+                 -I#{dev_dirs[:rice].join('include')}
+                 -I#{dev_dirs[:gtest]}/include )
   ldflags  = cflags
-  libs  = dirs.ruby_ldflags + 
-          %W( -L#{dirs[:gtest]}/build -lgtest
+  libs  = dev_dirs.ruby_ldflags + 
+          %W( -L#{dev_dirs[:gtest]}/build -lgtest
               -lopencv_core -lopencv_calib3d
               -lpthread
               -Llib -lopencv_rice

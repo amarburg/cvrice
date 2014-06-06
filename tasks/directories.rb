@@ -9,14 +9,9 @@ class DirectorySet
 
     @dirs[:top] = Pathname.new(__FILE__).parent.parent.expand_path
 
-    paths = []; topdir.descend{ |p| paths << p }
-    @dirs[:workspace] = paths.reverse.find { |p| p.basename.to_s =~ /workspace/ }
-
-    @dirs[:gtest] = workspace.join("gtest")
-    raise "Couldn't find gtest" unless @dirs[:gtest].directory?
-
-    @dirs[:gem] = Pathname.new( `rvm gemdir`.chomp )
-    raise "Couldn't find gemdir" unless @dirs[:gem].directory?
+    
+    #@dirs[:gem] = Pathname.new( `rvm gemdir`.chomp )
+    #raise "Couldn't find gemdir" unless @dirs[:gem].directory?
 
     @dirs[:rice] = gem_path( "rice" ).join('ruby','lib')
     raise "Couldn't find the Rice source files \"%s\"" % @dirs[:rice] unless @dirs[:rice]
@@ -32,6 +27,20 @@ class DirectorySet
 
   def [](a)
     @dirs[a]
+  end
+
+end
+
+class DevelopmentDirectorySet < DirectorySet
+
+  def initialize
+    super
+
+    paths = []; topdir.descend{ |p| paths << p }
+    @dirs[:workspace] = paths.reverse.find { |p| p.basename.to_s =~ /workspace/ }
+
+    @dirs[:gtest] = workspace.join("gtest")
+    raise "Couldn't find gtest" unless @dirs[:gtest].directory?
   end
 
   # Convenience macros
@@ -68,6 +77,10 @@ class DirectorySet
 #    ENV['LD_LIBRARY_PATH'] = [ rbconfig('rubylibdir') + "/lib",
 #                               topdir.join("lib") ].join(':')
 #  end
+end
+
+def dev_dirs
+  @dev_dirs ||= DevelopmentDirectorySet.new
 end
 
 def dirs
