@@ -9,6 +9,7 @@ ENV['GEM_PATH'] = ENV['_ORIGINAL_GEM_PATH']
     #sh "cd #{dir}"
     #ruby "mkrf_conf.rb"
     sh "cd #{dir} && bundle install && bundle exec ruby mkrf_conf.rb && rake"
+    sh 'cp opencv_rice/*.so ../lib'
   end
 
   task :default => dir
