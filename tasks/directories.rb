@@ -23,7 +23,7 @@ class DirectorySet
   end
 
   def gem_path( gem )
-    Pathname.new(Bundler.setup.gems[gem].first.bin_dir).parent
+    Pathname.new(`bundle show #{gem}`.chomp)
   end
 
   def dir( a )
