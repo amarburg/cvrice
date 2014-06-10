@@ -15,7 +15,7 @@ module CVRice
     CV_32F = 5
     CV_64F = 6
 
-    # Emulate the overloaded constructor in Ruby
+    # Emulate an overloaded constructor in Ruby
     class << self
       def new( *args )
         case args.length
@@ -117,6 +117,10 @@ module CVRice
     arithmatic_operator :+, :add_mat, :add_const, '"Don\'t know how to add a %s to a CVRice::Mat"'
     arithmatic_operator :-, :subtract_mat, :subtract_const, '"Dont\'t know how to subtract a %s from a CVRice::Mat"'
     arithmatic_operator :*, :mult_mat, :mult_const, '"Dont\'t know how to multiply a CVRice::Mat by a %s"'
+
+    def zero?
+      norm.abs < 1e-12
+    end
 
     def each
       if block_given?
