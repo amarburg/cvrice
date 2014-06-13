@@ -17,4 +17,5 @@ test/tmp
 test/version_tmp
 test_c/test_app
 ext/opencv_rice/mkrf.log
+ext/opencv_rice/Rakefile
 tmp
