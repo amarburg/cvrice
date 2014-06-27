@@ -1,5 +1,6 @@
 
 require 'matrix'
+require 'libopencv_rice'
 
 module CVRice
 
@@ -95,6 +96,9 @@ module CVRice
         case b
         when Vector,Matrix,Mat
           send( mat_function, b )
+        when Matx22f
+          ## Smells are bad...
+          send( mat_function, Mat.rows(b.to_a) )
         when Array
           case b.first
           when Array
