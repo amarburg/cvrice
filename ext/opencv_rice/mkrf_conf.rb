@@ -27,6 +27,8 @@ sources = %w( opencv_rice.cpp
               nonfree/sift.cpp )
 
 Mkrf::Generator.new( 'libopencv_rice', sources, compiler: "g++" ) do |gen|
+  gen.parallelize!
+
   # TODO.  Shouldn't be fixed paths...
   #   (need to make "mkrf-rice" to correspond to "mkmf-rice"
 
