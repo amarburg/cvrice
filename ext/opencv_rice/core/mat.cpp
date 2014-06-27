@@ -101,17 +101,17 @@ Mat mat_merge( const Array mats )
 
 Mat mat_transpose( const Mat &m ) { return m.t(); }
 
-Mat mat_add_mat( const Mat &a, const Mat &b ) { return a+b; }
-Mat mat_add_const( const Mat &a, const double b ) { return a+b; }
-Mat mat_subtract_mat( const Mat &a, const Mat &b ) { return a-b; }
-Mat mat_subtract_const( const Mat &a, const double b ) { return a-b; }
-Mat mat_subtract_reverse_const( const Mat &a, const double b ) { return b-a; }
-Mat mat_mult_mat( const Mat &a, const Mat &b ) { return a*b; }
-Mat mat_mult_const( const Mat &a, const double b ) { return a*b; }
+Mat mat_add_mat( const Mat a, const Mat b ) { return a+b; }
+Mat mat_add_const( const Mat a, const double b ) { return a+b; }
+Mat mat_subtract_mat( const Mat a, const Mat b ) { return a-b; }
+Mat mat_subtract_const( const Mat a, const double b ) { return a-b; }
+Mat mat_subtract_reverse_const( const Mat a, const double b ) { return b-a; }
+Mat mat_mult_mat( const Mat a, const Mat b ) { return a*b; }
+Mat mat_mult_const( const Mat a, const double b ) { return a*b; }
 
-Mat mat_pinv( const Mat &m ) { return m.inv( DECOMP_SVD ); }
-Mat mat_inv(  const Mat &m ) { return m.inv(); }
-Size mat_size( const Mat &m ) { return m.size(); }
+Mat mat_pinv( const Mat m ) { return m.inv( DECOMP_SVD ); }
+Mat mat_inv(  const Mat m ) { return m.inv(); }
+Size mat_size( const Mat m ) { return m.size(); }
 
 double mat_l2_norm( const Mat &m ) { return norm( m, NORM_L2 ); }
 

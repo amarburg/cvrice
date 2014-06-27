@@ -49,7 +49,7 @@ _T matx_from_ruby( Rice::Object obj )
     return m;
   } 
 
-  std::string s("Unable to convert a ");
+  std::string s("(mat_conversions.ipp) Unable to convert a ");
   s += obj.class_of().name().c_str();
   s += " to a Matx";
   rb_raise( rb_eTypeError, "%s", s.c_str() );

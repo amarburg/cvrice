@@ -20,7 +20,6 @@ template<> inline cv::Mat from_ruby<cv::Mat>( Rice::Object obj )
 template<> inline cv::_InputArray from_ruby<cv::_InputArray>( Rice::Object obj )
 { return mat_from_ruby( obj ); }
 
-
 //TODO.  Can this be templatized?  Can you make a template of a template?
 template<> inline cv::Matx22d from_ruby< cv::Matx22d >( Rice::Object obj )
 { return matx_from_ruby< cv::Matx22d >( obj ); }
