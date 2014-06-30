@@ -18,7 +18,6 @@ module CVRice
     end
   end
 
-  class Keypoint < KeyPoint
-  end
+  Keypoint = KeyPoint
 
 end
