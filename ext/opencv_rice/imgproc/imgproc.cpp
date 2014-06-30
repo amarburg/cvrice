@@ -51,6 +51,13 @@ Mat cvrice_undistort( const Mat &in, const Mat camera, const _Vec distCoeffs )
   return out;
 }
 
+Mat cvrice_warp_perspective( const Mat in, const Mat m, const Size dsize, int flags, int borderMode, const Scalar borderValue )
+{
+  Mat out( dsize, in.type() );
+  warpPerspective( in, out, m, dsize, flags, borderMode, borderValue );
+  return out;
+}
+
 template <typename _Vec>
 Mat cvrice_undistort_newcam( const Mat &in, const Mat camera, const _Vec distCoeffs, const Mat &newCamera )
 {
@@ -71,6 +78,9 @@ void init_imgproc( Module &rb_mCVRice )
         (Arg("input"), Arg("rho"), Arg("theta"), Arg("threshold"), Arg("srn") = 0, Arg("stn")=0))
     .define_module_function("cvtcolor", &cvrice_cvtcolor )
     .define_module_function("undistort4d", &cvrice_undistort<Vec4d> )
-    .define_module_function("undistort4d_newcam", &cvrice_undistort_newcam<Vec4d> );
+    .define_module_function("undistort4d_newcam", &cvrice_undistort_newcam<Vec4d> )
+    .define_module_function("warp_perspective", &cvrice_warp_perspective,
+        (Arg("input"), Arg("m"), Arg("dsize"), Arg("flags") = (int)INTER_LINEAR, 
+         Arg("borderMode") = (int)BORDER_CONSTANT, Arg("borderValue") = Scalar()));
 }
 

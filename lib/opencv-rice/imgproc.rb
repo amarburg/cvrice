@@ -53,4 +53,42 @@ module CVRice
     end
   end
 
+  module Interpolation
+    NEAREST = 0
+    LINEAR = 1
+    CUBIC = 2
+    AREA = 3
+    LANCZOS4 = 4
+
+    WARP_FILL_OUTLIERS   = 8
+    WARP_INVERSE_MAP     = 16
+  end
+
+  module BorderMode
+    CONSTANT    = 0
+    REPLICATE   = 1
+    REFLECT     = 2
+  end
+
+  def warp_perspective_extents( src, m, flags = nil, borderMode = nil )
+    corners = [ [0,0], [src.size.width, 0], [0, src.size.height], [src.size.width, src.size.height]].map { |pt|
+      mapped = m * Vec3d.new( pt[0], pt[1], 1 )
+      [ mapped[0]/mapped[2], mapped[1]/mapped[2] ]
+    }
+    xs,ys = corners.transpose
+
+    width = xs.max - xs.min
+    height = ys.max - ys.min
+
+    affine = Mat.rows [[1,0,-xs.min],[0,1,-ys.min],[0,0,1]]
+    warp = affine * m
+
+    args = [ src, m, Size.new( width, height ) ]
+    args << flags if flags
+    args << borderMode if borderMode
+
+    warp_perspective *args
+  end
+  module_function :warp_perspective_extents
+
 end
