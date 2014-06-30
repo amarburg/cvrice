@@ -83,7 +83,7 @@ module CVRice
     affine = Mat.rows [[1,0,-xs.min],[0,1,-ys.min],[0,0,1]]
     warp = affine * m
 
-    args = [ src, m, Size.new( width, height ) ]
+    args = [ src, warp, Size.new( width, height ) ]
     args << flags if flags
     args << borderMode if borderMode
 

@@ -40,9 +40,21 @@ Mat cvrice_houghlines( const Mat &src, double rho, double theta, int threshold, 
 {
   Mat lines;
   HoughLines( src, lines, rho, theta, threshold, srn, srn );
-  return lines;
+
+  // For convenience, reshape from a rows x 1 of type CV_32FC2
+  // to rows x 2 of type CV_32FC1
+  return lines.reshape( 1 );
 }
 
+Mat cvrice_houghlines_p( const Mat &src, double rho, double theta, int threshold, double minLineLength, double maxLineGap )
+{
+  Mat lines;
+  HoughLinesP( src, lines, rho, theta, threshold, minLineLength, maxLineGap );
+
+  // For convenience, reshape from a rows x 1 of type CV_32SC4
+  // to rows x 4 of type CV_32SC1
+  return lines.reshape( 1 );
+}
 template <typename _Vec>
 Mat cvrice_undistort( const Mat &in, const Mat camera, const _Vec distCoeffs )
 {
@@ -76,6 +88,8 @@ void init_imgproc( Module &rb_mCVRice )
         (Arg("input"), Arg("threshold1"), Arg("threshold2"), Arg("apertureSize") = 3, Arg("L2gradient") = false ))
     .define_module_function("houghlines", &cvrice_houghlines,
         (Arg("input"), Arg("rho"), Arg("theta"), Arg("threshold"), Arg("srn") = 0, Arg("stn")=0))
+    .define_module_function("houghlines_p", &cvrice_houghlines_p,
+        (Arg("input"), Arg("rho"), Arg("theta"), Arg("threshold"), Arg("minLineLength") = 0, Arg("maxLineGap") = 0))
     .define_module_function("cvtcolor", &cvrice_cvtcolor )
     .define_module_function("undistort4d", &cvrice_undistort<Vec4d> )
     .define_module_function("undistort4d_newcam", &cvrice_undistort_newcam<Vec4d> )
