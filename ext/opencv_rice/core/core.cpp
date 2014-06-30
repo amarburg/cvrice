@@ -16,6 +16,12 @@ void init_keypoint( Module & );
 void init_point( Module & );
 void init_size( Module & );
 
+// TODO: Broken windows.  Fix up the namespacing
+namespace CVRice {
+  void init_draw( Module & );
+  void init_scalar( Module & );
+}
+
 void init_core( Module &rb_mCVRice )
 {
   init_mat( rb_mCVRice );
@@ -25,6 +31,8 @@ void init_core( Module &rb_mCVRice )
   init_vector( rb_mCVRice );
   init_dmatch( rb_mCVRice );
   init_size( rb_mCVRice );
+  init_draw( rb_mCVRice );
+  init_scalar( rb_mCVRice );
 
   define_class_under<cv::String>( rb_mCVRice, "String" );
 }
