@@ -60,7 +60,13 @@ void init_point( Module &rb_mCVRice ) {
     .define_method( "y", &get_point_y<Point2i> );
 
   define_implicit_cast<Point2f,Point2d>();
+  define_implicit_cast<Point2f,Point2i>();
+
   define_implicit_cast<Point2d,Point2f>();
+  define_implicit_cast<Point2d,Point2i>();
+
+  define_implicit_cast<Point2d,Point2i>();
+  define_implicit_cast<Point2f,Point2i>();
 }
 
 

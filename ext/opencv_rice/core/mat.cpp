@@ -15,11 +15,22 @@ using std::cout;
 
 #include "mat_conversions.h"
 
+int mat_at_int( Mat const &m, int r, int c = 0) {
+  switch(m.depth()) {
+    case CV_32S:
+      return m.at<int>(r,c);
+    default:
+      rb_raise( rb_eTypeError, "Haven't handled this case in mat_at_int" );
+  }
+}
+
 // TODO:  These are madly non-type-safe.  
 double mat_at_d( Mat const &m, int r, int c = 0) {
   switch(m.depth()) {
     case CV_8U:
       return 1.0 * m.at<unsigned char>(r,c);
+    case CV_32S:
+            return m.at<int>(r,c);
     case CV_32F:
       return (double)m.at<float>(r,c);
     case CV_64F:
@@ -135,6 +146,16 @@ Object mat_to_a( Mat &m )
   int num_rows = m.rows, num_cols = m.cols;
 
   switch(m.depth()) {
+    case CV_32S:
+      for( int r = 0; r < num_rows; ++r ) {
+        Array row;
+        int *flt = m.ptr<int>(r);
+        for( int c = 0; c < num_cols; ++c ) {
+          row.push( flt[c] );
+        }
+        arr.push( row );
+      }
+      break;
     case CV_32F:
       for( int r = 0; r < num_rows; ++r ) {
         Array row;
@@ -175,6 +196,8 @@ void init_mat( Module &rb_mCVRice )
     .define_method( "type", &Mat::type )
     .define_method( "depth", &Mat::depth )
     .define_method( "channels", &Mat::channels )
+    .define_method( "at_int", &mat_at_int, (Arg("r"), Arg("c") = 0) )
+    .define_method( "at_32s", &mat_at_int, (Arg("r"), Arg("c") = 0) )
     .define_method( "at_d", &mat_at_d, (Arg("r"), Arg("c") = 0) )
     .define_method( "at_f", &mat_at_f, (Arg("r"), Arg("c") = 0) )
     .define_method( "at_8u", &mat_at_8u, (Arg("r"), Arg("c") = 0) )
