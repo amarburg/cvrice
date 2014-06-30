@@ -10,8 +10,6 @@ using namespace cv;
 #include "core.h"
 #include "matx.h"
 
-
-
 Object vec3d_to_a( const Vec3d &vec )
 {
   Array arr;
@@ -34,6 +32,12 @@ void init_vector( Module &parent ) {
     .define_method( "[]", vec3d_accessor(&Vec3d::operator[]) )
     .define_method( "to_a", &vec3d_to_a )
     .define_method( "to_mat", &matx_to_mat<Vec3d> );
+
+  typedef double &(Vec4d::*vec4d_accessor)( int i );
+  define_class_under<Vec4d>( parent, "Vec4d" )
+    .define_constructor( Constructor<Vec4d, double, double, double, double>(),
+        (Arg("a") = 0, Arg("b") = 0, Arg("c") = 0, Arg("d") = 0) )
+    .define_method( "[]", vec4d_accessor(&Vec4d::operator[]) );
 }
 
 

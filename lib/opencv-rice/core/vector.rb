@@ -3,8 +3,13 @@
 
 module CVRice
 
-  class Vec3d
+  class VecNd
+    def self.new( *args )
+      raise "Not implemented yet..."
+    end
+  end
 
+  class Vec3d
     def to_vector
       Vector[ *(to_a) ]
     end

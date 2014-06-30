@@ -34,4 +34,23 @@ module CVRice
     RGBA2GRAY    = 11
 
   end
+
+  def undistort( src, camera, coeffs, newcamera = nil )
+    case coeffs
+    when Array, Vector
+      coeffs = VecNd.new( coeffs )
+    end
+
+    case coeffs
+    when Vec4d
+      if newcamera
+        undistort4d_newcam( src, camera, coeffs, newcamera )
+      else
+        undistort4d( src, camera, coeffs )
+      end
+    else
+      raise "I don't know how to treat #{coeffs.inspect} as a set of undistort coefficients"
+    end
+  end
+
 end

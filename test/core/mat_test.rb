@@ -4,7 +4,7 @@ require 'minitest/autorun'
 require 'opencv-rice'
 require 'matrix'
 
-require_relative "common"
+require_relative "../common"
 
 class TestMat < Minitest::Test
   parallelize_me!
