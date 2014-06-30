@@ -7,6 +7,7 @@ using namespace Rice;
 #include <opencv2/core.hpp>
 using namespace cv;
 
+#include <string>
 #include <vector>
 using std::vector;
 
@@ -14,28 +15,43 @@ using std::vector;
 
 // Still haven't sussed how Rice handles accessors for class members
 // So I'm writing manual accessors for now
-int get_size2i_width( const Size2i &sz ) { return sz.width; }
-int get_size2i_height( const Size2i &sz ) { return sz.height; }
-float get_size2f_width( const Size2f &sz ) { return sz.width; }
-float get_size2f_height( const Size2f &sz ) { return sz.height; }
+template <typename _Tp>
+_Tp get_size_width( const Size_<_Tp> &sz ) 
+{ return sz.width; }
 
-void takes_a_size2f( const Size2f &sz ) {;}
-void takes_a_size2i( const Size2i &sz ) {;}
+template <typename _Tp>
+_Tp get_size_height( const Size_<_Tp> &sz ) 
+{ return sz.height; }
+
+template <typename _Tp>
+void takes_a_size( const Size_<_Tp> &sz ) 
+{;}
+
+template <typename _Tp>
+bool size_equality( const Size_<_Tp> a, const Size_<_Tp> b ) 
+{ return (a.height == b.height) && (a.width == b.width); }
+
+
+
+template <typename _Tp>
+void define_size( Module &rb_mParent, const char *name )
+{
+  define_class_under< Size_<_Tp> >( rb_mParent, name )
+    .define_constructor( Constructor<Size_<_Tp>, int, int>(), (Arg("x")=0, Arg("y")=0) )
+    .define_method( "width", &get_size_width<_Tp> )
+    .define_method( "height", &get_size_height<_Tp> )
+    .define_method( "==", &size_equality<_Tp> );
+
+}
+
 
 void init_size( Module &rb_mCVRice ) {
 
-  define_class_under<Size2i>( rb_mCVRice, "Size2i" )
-    .define_constructor( Constructor<Size2i, int, int>(), (Arg("x")=0, Arg("y")=0) )
-    .define_method( "width", &get_size2i_width )
-    .define_method( "height", &get_size2i_height );
+  define_size<int>( rb_mCVRice, "Size2i" );
+  define_size<float>( rb_mCVRice, "Size2f" );
 
-  define_class_under<Size2f>( rb_mCVRice, "Size2f" )
-    .define_constructor( Constructor<Size2f, float, float>(), (Arg("x")=0., Arg("y")=0.) )
-    .define_method( "width", &get_size2f_width )
-    .define_method( "height", &get_size2f_height );
-
-  rb_mCVRice.define_module_function("takes_a_size2f", &takes_a_size2f )
-    .define_module_function( "takes_a_size2i", &takes_a_size2i );
+   rb_mCVRice.define_module_function( "takes_a_size2i", &takes_a_size<int> )
+     .define_module_function( "takes_a_size2f", &takes_a_size<float> );
 
   define_implicit_cast<Size2i,Size2f>();
   define_implicit_cast<Size2f,Size2i>();
