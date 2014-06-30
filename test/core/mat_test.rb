@@ -40,11 +40,6 @@ class TestMat < Minitest::Test
     }
   end
 
-  def test_mat
-    m = Mat.new
-    save_image "/tmp/foo.jpg", m
-  end
-
   def test_constructors
     assert_mat_equals_arr Mat.rows( arr ), "Mat.rows arr"
     assert_mat_equals_arr Mat.new( arr ), "Mat.new arr"

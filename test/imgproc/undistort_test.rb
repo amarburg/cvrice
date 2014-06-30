@@ -19,7 +19,7 @@ class TestUndistort < Minitest::Test
     assert_equal img.depth, undistorted.depth
     assert_equal img.size, undistorted.size
 
-    save_image "/tmp/undistorted.jpg", undistorted
+    save_test_image "/tmp/undistorted.jpg", undistorted
   end
 
 end

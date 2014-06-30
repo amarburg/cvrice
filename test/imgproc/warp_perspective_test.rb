@@ -19,7 +19,7 @@ class TestWarpPerspective < Minitest::Test
     assert_equal img.depth, warped.depth
     assert_equal img.size, warped.size
 
-    save_image "/tmp/warped.jpg", warped
+    save_test_image "/tmp/warped.jpg", warped
   end
 
   def test_warp_perspective_extents
@@ -29,7 +29,7 @@ class TestWarpPerspective < Minitest::Test
 
     assert_equal img.depth, warped.depth
 
-    save_image "/tmp/warped_extents.jpg", warped
+    save_test_image "/tmp/warped_extents.jpg", warped
   end
 
 

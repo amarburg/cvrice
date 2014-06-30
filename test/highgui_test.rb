@@ -13,7 +13,7 @@ class TestHighgui < Minitest::Test
 
     assert_kind_of Mat, img
 
-    save_image "/tmp/foo.jpg", img
+    save_test_image "/tmp/foo.jpg", img
   end
 
 end

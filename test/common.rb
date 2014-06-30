@@ -13,3 +13,9 @@ def sample_camera_matrix
             [0, 1256.1306710569052, 344.12243211337216],
             [0, 0, 1]]
 end
+
+def save_test_image( fname, mat )
+  if ENV['SAVE_TEST_IMAGES']
+    save_image fname, mat
+  end
+end

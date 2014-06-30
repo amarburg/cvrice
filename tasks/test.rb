@@ -9,6 +9,8 @@ Rake::TestTask.new do |t|
   t.verbose = true
 end
 
+ENV['SAVE_TEST_IMAGES'] = 'true'
+
 task :test     => :ext
 task :test_gdb => :ext
 
