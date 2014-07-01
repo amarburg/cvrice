@@ -1,4 +1,5 @@
 
+require_relative 'imgproc/misc'
 
 
 module CVRice
@@ -87,7 +88,7 @@ module CVRice
     args << flags if flags
     args << borderMode if borderMode
 
-    warp_perspective *args
+    [warp_perspective(*args), warp]
   end
   module_function :warp_perspective_extents
 

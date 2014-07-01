@@ -25,7 +25,7 @@ class TestWarpPerspective < Minitest::Test
   def test_warp_perspective_extents
     img = load_image test_image
 
-    warped = warp_perspective_extents( img, warp )
+    warped,total_warp = warp_perspective_extents( img, warp )
 
     assert_equal img.depth, warped.depth
 
