@@ -1,0 +1,16 @@
+
+
+module CVRice
+
+  module FontFace
+    HERSHEY_SIMPLEX = 0
+    HERSHEY_PLAIN   = 1
+    HERSHEY_DUPLEX  = 2
+    HERSHEY_COMPLEX = 3
+    HERSHEY_TRIPLEX = 4
+    HERSHEY_COMPLEX_SMALL = 5
+    HERSHEY_SCRIPT_SIMPLEX = 6
+    HERSHEY_SCRIPT_COMPLEX = 7
+  end
+
+end

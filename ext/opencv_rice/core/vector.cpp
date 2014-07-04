@@ -9,6 +9,7 @@ using namespace cv;
 
 #include "core.h"
 #include "matx.h"
+#include "vector.h"
 
 Object vec3d_to_a( const Vec3d &vec )
 {
@@ -18,15 +19,6 @@ Object vec3d_to_a( const Vec3d &vec )
   arr.push( vec[2] );
   return arr;
 }
-
-template <typename _Vec>
-Object vec_to_arr( const _Vec &vec )
-{
-  Array arr;
-  for( int i = 0; i < _Vec::channels; ++i ) arr.push( vec[i] );
-  return arr;
-}
-
 
 template <typename _Vec>
 void define_vec2( Module &rb_mParent, const char *name  )

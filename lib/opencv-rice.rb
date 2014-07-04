@@ -7,6 +7,7 @@ require 'opencv-rice/core/size'
 require 'opencv-rice/core/vector'
 require 'opencv-rice/core/point'
 require 'opencv-rice/core/keypoint'
+require 'opencv-rice/core/draw'
 
 require 'opencv-rice/calib3d'
 require 'opencv-rice/imgproc'
